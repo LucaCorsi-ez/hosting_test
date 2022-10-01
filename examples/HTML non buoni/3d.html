@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- Meta -->
+    <meta charset="utf-8">
+    <title>Virtual Reality Museum in A-Frame</title>
+
+    <meta property="og:title" content="Virtual Reality Museum in A-Frame" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://metaverseevirtualart.com" />
+    <meta property="og:image" content="https://blog.r23.de/museum/screenshots/thehall1.jpg" />
+    <meta property="og:description" content="WebVR demo that displays art " />
+	<meta property="article:tag" content="WebVR" />
+	<meta property="article:tag" content="A-Frame" />
+	<meta property="article:section" content="Virtual Reality" />
+
+    <meta name="twitter:card" content="summary_large_image">
+
+    <meta name="twitter:title" content="Virtual Reality Museum in A-Frame">
+    <meta name="twitter:description" content="WebVR demo that displays art ">
+    <meta name="twitter:image" content="https://blog.r23.de/museum/screenshots/thehall1.jpg">
+
+	<!-- Favicon -->
+    <link rel="icon" href="img/luca.png">
+	
+	<!-- Web Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
+	
+    <meta name="description" content="Virtual Gallery by Luca Corsi/VRGallery https://metaversevirtualart.com">
+	<meta name="Luca Corsi" content="">
+		
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.0/dist/aframe-extras.min.js"></script>
+	<script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@5.0.0/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://rocketvirtual.com/aframePACKAGE/aframe-teleport-controls-master/dist/aframe-teleport-controls.js"></script>
+
+    <script src="js/lzma.js"></script>
+    <script src="js/ctm.js"></script>
+    <script src="js/CTMLoader.js"></script>
+
+    <script src="js/aframe-teleport-controls.min.js"></script>
+    <script src="js/spheres_anim.js"></script>
+    <script src="js/anim_1.js"></script>
+    <script src="js/anim_2.js"></script>
+    <script src="js/mocap.js"></script>
+    <script src="js/envMapMaterial.js"></script>
+    <script src="js/ctm_component.js"></script>
+    <script src="js/mobile_component.js"></script>
+    
+          <script>
+AFRAME.registerComponent('a-frame-to-html', {
+  init: function () {
+    let box = document.querySelector('#MONOLITE')
+    let modal = document.querySelector('.container')
+
+    box.addEventListener('click', (e) => {
+      modal.classList.add("show")
+    })
+  }
+});
+</script>
+    
+    <!-- audio-controls -->
+    
+    <script type="text/javascript">
+    if (screen.width <= 500) {
+        document.location = "3dmobile.html";
+    }
+ </script>
+
+  </head>
+
+  <body>
+      
+
+
+
+    <div id="container" class="container">
+      <div class="info">
+        <div class="company"><a href="http://www.metaversevirtualart.com" target="_blank">Luca Corsi</a></div>
+        <div class="title">VR Gallery</div>
+        <div class="logo"><a href="https://www.metaversevirtualart.com" target="_blank"><img src="img/luca.png"></a></div>
+        <a class="button" id="start_experience" href="#">Avvia Esprerienza</a>
+        <div class="instructions">
+          <div><strong>VR</strong>: Hand controllers e teletrasporto con "trigger".</div>
+          <div><strong>Desktop</strong>: Tatiera (WASD/freccie) e mouse.</div>
+          <div><strong>Mobile</strong>: touch controls.</div>
+        </div>
+      </div>
+    </div>
+
+    <!--<a-scene stats>-->
+
+    <a-scene>
+        <a-entity ></a-entity>
+<a-entity></a-entity>
+        
+        <a-entity class="leftController"  hand-controls="hand: left;" teleport-controls="button: trigger; curveShootingSpeed: 11; collisionEntities: #Nav-Mesh;" visible="true" ></a-entity>
+        
+        
+        <a-entity class="rightController" laser-controls raycaster="showLine: trude; far: 10; interval: 0; object: .clickable, a-link;" line="color: #7cfc00; opacity: 0.5" visible="true"></a-entity>
+        
+        	<a-entity movement-controls="speed: 0.2; constrainToNavMesh: true" position="0 0 0"
+                    oculus-touch-controls="hand: left"  
+                       oculus-touch-controls="hand: right"
+                      >
+			<!-- Camera -->
+			<a-entity id="cam" camera position="0 1.6 0"
+					  look-controls="pointerLockEnabled: true"
+                      touch-controls="">
+				<a-cursor></a-cursor>
+			</a-entity>
+		</a-entity>
+        
+     
+        
+        <!-- Nav-Mesh -->
+           <a-asset-item id="Nav-Mesh" src="unity/nav-mesh-museo.gltf"></a-asset-item>
+        
+          <a-entity gltf-model="#Nav-Mesh" 
+            nav-mesh
+                    scale=" 0.9 0.9 0.9"
+            rotation="0 0 0" 
+            visible="false"></a-entity>
+        
+       
+      	<a-box id="yellow" color="#FF0000" position="-3.0016 1.03358 -1.42353" class="ui" href="https://www.metaversevirtualart.com" target="_blank"  scale="0.25 0.25 0.05"
+			   event-set__enter="_event: mouseenter; material.color: #FF0000"
+			   event-set__leave="_event: mouseleave; material.color: #FFAA00" 
+			   event-set__scale="_target: #blue; _event: click; scale: 1 1 1"
+			   event-set__position="_target: #grey; _event: click; position: -3.0016 1.03358 -1.38">
+		</a-box>
+		
+		<!-- Blue Box | Morphing Panel  cambiare posizione in "0 3 -5" -->
+		<a-box id="blue" color="#00AAFF" position="0 -4 -5" opacity="1"></a-box>
+		<!-- Grey Plane | Reset/Close -->
+
+		<a-plane id="grey" color="#fff" position="-3.0016 1.03358 -3" scale="0.25 0.25 0.5" class="ui"
+			 	 event-set__enter="_event: mouseenter; material.color: #FF0000"
+				 event-set__leave="_event: mouseleave; material.color: #fff"
+				 event-set__position="_event: click; position: -3.0016 1.03358 -1.5"
+				 event-set__scale="_target: #blue; _event: click; scale: 0 0 0">
+		</a-plane>
+        
+<!--
+        <a-box id="portale" class="link" rotation="0 90 0" link="href: /onclick_pages/mobile4 - Copia.html; title: Roomkey" color="brown" depth="2" height="2.5" width="0.05" material="" geometry="" position="-0.02 1.0332 -12.99099" scale="0.03 0.8 0.8"> -->
+            
+            
+  
+    </a-box>
+        
+      <a-entity mobile></a-entity>
+
+     
+      <a-entity light="type: ambient; color: #FFF"></a-entity>
+
+      <!-- Custom components with animations 
+      <a-entity spheres material="shader: envMapMaterial; src:textures/cube/hall/; "></a-entity>
+      <a-entity anim_1></a-entity>
+      <a-entity anim_2></a-entity>
+-->
+
+      <!-- - Custom components with animations -->
+
+      <a-assets>
+        <a-mixin id="checkpoint"></a-mixin>
+        <a-mixin id="checkpoint-hovered" color="#6CEEB5"></a-mixin>
+
+
+        <img id="sky_sphere-texture" src="textures/sky_sphere.jpg">
+
+        <a-sound src="audio/satie"
+                 autoplay="true"
+                 loop="true"
+                 position="1 1 0"></a-sound>
+
+        <a-sound src="audio/219462__cediez__musee-victoria-londres-grand-escalier.ogg"
+                 autoplay="true"
+                 loop="true"
+                 position="1 1 10"></a-sound>
+          
+            <!-- audio-track -->
+          
+          <audio id="satie" src="audio/satie.mp3"></audio>
+
+
+        <!-- floor
+        <a-asset-item id="floor-obj" src="models/floor.obj"></a-asset-item>
+        <img id="floor-texture" src="textures/floor.jpg">
+        <img id="floor_normal-texture" src="textures/floor_normal.jpg">
+        <!-- - floor -->
+
+         hall 
+        <a-asset-item id="hall-obj" src="models/hall5.obj"></a-asset-item>
+        <img id="hall-texture" src="textures/MRO2.jpg">
+          
+          <a-asset-item id="galleria-obj" src="models/provabakeobj.obj"></a-asset-item>
+        <img id="galleria-texture" src="textures/bakelow2.png">
+
+        <img id="galleria_normal-texture" src="textures/muromap.png">
+        <!-- - hall -->
+           
+      
+          
+             <div id="container" class="container">
+      <div class="info">
+        <div class="company"><a href="http://www.metaversevirtualart.com" target="_blank">metaversevirtualart.com</a></div>
+        <div class="title">VR Gallery</div>
+        <div class="logo"><a href="http://www.metaversevirtualart.com" target="_blank"><img src="img/luca.png"></a></div>
+        <a class="button" id="start_experience" href="#">start experience</a>
+        <div class="instructions">
+          <div><strong>VR</strong>: Hand controllers and teleport with trigger.</div>
+          <div><strong>Desktop</strong>: Keyboard (WASD/arrows) and mouse.</div>
+          <div><strong>Mobile</strong>: Gaze cursor and teleportation.</div>
+        </div>
+      </div>
+    </div>
+
+        
+          
+        <!-- hall low floor -->
+        <!-- this piece is only meant for teleportation -->
+        <a-asset-item id="hall_low_floor-obj" src="models/hall_low_floor.obj"></a-asset-item>
+
+        <!-- - hall low floor-->
+
+        <!-- acropolis 
+        <a-asset-item id="acropolis-obj" src="models/acropolis.obj"></a-asset-item>
+        <img id="acropolis-texture" src="textures/acropolis.jpg">
+        <!-- - acropolis -->
+
+        <!-- castle_lake 
+        <a-asset-item id="castle_lake-obj" src="models/castle_lake.obj"></a-asset-item>
+        <img id="castle_lake-texture" src="textures/castle_lake.jpg">
+        <!-- - castle_lake -->
+     <a-asset-item id="good_samaritan-obj" src="models/good_samaritan.obj"></a-asset-item>
+        <img id="good_samaritan-texture" src="textures/good_samaritan.jpg">
+        <!-- good_samaritan 
+   
+        <!-- - good_samaritan -->
+
+        <!-- moonlight 
+        <a-asset-item id="moonlight-obj" src="models/moonlight.obj"></a-asset-item>
+        <img id="moonlight-texture" src="textures/moonlight.jpg">
+        <!-- - moonlight -->
+
+        <!-- podiums
+        <a-asset-item id="podiums-obj" src="models/podiums.obj"></a-asset-item>
+        <img id="podiums-texture" src="textures/podiums.jpg">
+        <!-- - podiums -->
+
+        <!-- lamps 
+        <a-asset-item id="lamps-obj" src="models/lamps.obj"></a-asset-item>
+        <img id="lamps-texture" src="textures/lamps.jpg">
+        <!-- - lamps -->
+
+        <!-- david -->
+        <!--<a-asset-item id="david-obj" src="models/david.obj"></a-asset-item>-->
+        <a-asset-item id="david-ctm" src="models/david.ctm"></a-asset-item>
+        <!--<img id="david-texture" src="textures/david.jpg">-->
+        <!-- - david -->
+
+        <!-- female_head -->
+        <!--<a-asset-item id="female_head-obj" src="models/female_head.obj"></a-asset-item>-->
+        <a-asset-item id="female_head-ctm" src="models/female_head.ctm"></a-asset-item>
+        <!--<img id="female_head-texture" src="textures/female_head.jpg">-->
+        <!-- - female_head -->
+
+        <!-- lion -->
+        <!--<a-asset-item id="lion-obj" src="models/lion.obj"></a-asset-item>-->
+        <a-asset-item id="lion-ctm" src="models/lion.ctm"></a-asset-item>
+        <!--<img id="lion-texture" src="textures/lion.jpg">-->
+        <!-- - lion -->
+
+        <!-- greek_bust -->
+        <!--<a-asset-item id="greek_bust-obj" src="models/greek_bust.obj"></a-asset-item>-->
+        <a-asset-item id="greek_bust-ctm" src="models/greek_bust.ctm"></a-asset-item>
+        <!--<img id="greek_bust-texture" src="textures/greek_bust.jpg">-->
+        <!-- - greek_bust -->
+
+        <!-- old_man -->
+        <!--<a-asset-item id="old_man-obj" src="models/old_man.obj"></a-asset-item>-->
+     <a-asset-item id="MONOLITE" src="models/mela.gltf"></a-asset-item>
+          
+               <a-asset-item id="pipa" src="models/CECI%20N-EST.gltf"></a-asset-item>
+          
+                         <a-asset-item id="galleria" src="models/gal4%20ci%20siamo.glb"></a-asset-item>
+   
+            
+           <a-asset-item id="pavimento" src="models/pavimento.glb"></a-asset-item>
+        <!--<img id="old_man-texture" src="textures/old_man.jpg">-->
+        <!-- - old_man -->
+
+        <!-- nefertiti -->
+        <!--<a-asset-item id="nefertiti-obj" src="models/nefertiti.obj"></a-asset-item>-->
+        <a-asset-item id="nefertiti-ctm" src="models/nefertiti.ctm"></a-asset-item>
+        <!--<img id="nefertiti-texture" src="textures/nefertiti.jpg">-->
+        <!-- - nefertiti -->
+
+        <!-- fractal_1 -->
+        <!--<a-asset-item id="fractal_1-obj" src="models/fractal_1.obj"></a-asset-item>-->
+        <a-asset-item id="fractal_1-ctm" src="models/fractal_1.ctm"></a-asset-item>
+        <!--<img id="fractal_1-texture" src="textures/fractal_1.jpg">-->
+        <!-- - fractal_1 -->
+
+        <!-- fractal_2 -->
+        <!--<a-asset-item id="fractal_2-obj" src="models/fractal_2.obj"></a-asset-item>-->
+        <a-asset-item id="fractal_2-ctm" src="models/fractal_2.ctm"></a-asset-item>
+        <!--<img id="fractal_2-texture" src="textures/fractal_2.jpg">-->
+        <!-- - fractal_2 -->
+
+        <!-- fractal_3 -->
+        <!--<a-asset-item id="fractal_3-obj" src="models/fractal_3.obj"></a-asset-item>-->
+        <a-asset-item id="fractal_3-ctm" src="models/fractal_3.ctm"></a-asset-item>
+        <!--<img id="fractal_3-texture" src="textures/fractal_3.jpg">-->
+        <!-- - fractal_3 -->
+
+        <!-- female_helmet -->
+        <!--<a-asset-item id="female_helmet-obj" src="models/female_helmet.obj"></a-asset-item>-->
+        <a-asset-item id="female_helmet-ctm" src="models/female_helmet.ctm"></a-asset-item>
+        <!--<img id="female_helmet-texture" src="textures/female_helmet.jpg">-->
+        <!-- - female_helmet -->
+
+        <!-- monk_uv -->
+        <!--<a-asset-item id="monk_uv-obj" src="models/monk_uv.obj"></a-asset-item>-->
+        <a-asset-item id="monk_uv-ctm" src="models/monk_uv.ctm"></a-asset-item>
+        <!--<img id="monk_uv-texture" src="textures/monk_uv.jpg">-->
+        <!-- - monk_uv -->
+
+        <!-- david_bike_hall_3 -->
+        <!--<a-asset-item id="david_bike_hall_3-obj" src="models/david_bike_hall_3.obj"></a-asset-item>-->
+        <a-asset-item id="david_bike_hall_3-ctm" src="models/david_bike_hall_3.ctm"></a-asset-item>
+        <!--<img id="david_bike_hall_3-texture" src="textures/david_bike_hall_3.jpg">-->
+        <!-- - david_bike_hall_3 -->
+
+
+        <!-- mocaps -->
+        <a-asset-item id="am_threejs_CEC_BODY_1_HEAD-mocap" src="js/mocap/am_threejs_CEC_BODY_1_HEAD.js"></a-asset-item>
+        <a-asset-item id="am_threejs_CEC_BODY_1_LEFT-mocap" src="js/mocap/am_threejs_CEC_BODY_1_LEFT.js"></a-asset-item>
+        <a-asset-item id="am_threejs_CEC_BODY_1_RIGHT-mocap" src="js/mocap/am_threejs_CEC_BODY_1_RIGHT.js"></a-asset-item>
+
+        <a-asset-item id="am_threejs_CEC_BODY_2_HEAD-mocap" src="js/mocap/am_threejs_CEC_BODY_2_HEAD.js"></a-asset-item>
+        <a-asset-item id="am_threejs_CEC_BODY_2_LEFT-mocap" src="js/mocap/am_threejs_CEC_BODY_2_LEFT.js"></a-asset-item>
+        <a-asset-item id="am_threejs_CEC_BODY_2_RIGHT-mocap" src="js/mocap/am_threejs_CEC_BODY_2_RIGHT.js"></a-asset-item>
+
+        <a-asset-item id="am_threejs_CEC_BODY_3_HEAD-mocap" src="js/mocap/am_threejs_CEC_BODY_3_HEAD.js"></a-asset-item>
+        <a-asset-item id="am_threejs_CEC_BODY_3_LEFT-mocap" src="js/mocap/am_threejs_CEC_BODY_3_LEFT.js"></a-asset-item>
+        <a-asset-item id="am_threejs_CEC_BODY_3_RIGHT-mocap" src="js/mocap/am_threejs_CEC_BODY_3_RIGHT.js"></a-asset-item>
+
+        <a-asset-item id="am_threejs_CEC_BODY_4_HEAD-mocap" src="js/mocap/am_threejs_CEC_BODY_4_HEAD.js"></a-asset-item>
+        <a-asset-item id="am_threejs_CEC_BODY_4_LEFT-mocap" src="js/mocap/am_threejs_CEC_BODY_4_LEFT.js"></a-asset-item>
+        <a-asset-item id="am_threejs_CEC_BODY_4_RIGHT-mocap" src="js/mocap/am_threejs_CEC_BODY_4_RIGHT.js"></a-asset-item>
+          
+           <a-asset-item id="MONOLITE" src="models/mela.gltf"></a-asset-item>
+           <a-asset-item id="podio1" src="models/podio1.glb"></a-asset-item>
+        <!-- - mocaps -->
+
+      </a-assets>
+
+      <a-sky color="#EEEEFF" material="src: #sky_sphere-texture"></a-sky>
+  <!--
+      <a-entity obj-model="obj: #floor-obj;" material="src: #floor-texture; normalMap: #floor_normal-texture; metalness: 0.6" id="floor"></a-entity>
+      <a-entity obj-model="obj: #hall-obj;" material="src: #hall-texture" id="hall"></a-entity>
+      <a-entity obj-model="obj: #hall_low_floor-obj;" material="opacity: 0.0" id="hall_low_floor"></a-entity>
+      <a-entity obj-model="obj: #acropolis-obj;" material="src: #acropolis-texture"></a-entity>
+      <a-entity obj-model="obj: #castle_lake-obj;" material="src: #castle_lake-texture"></a-entity>
+      <a-entity obj-model="obj: #good_samaritan-obj;" material="src: #good_samaritan-texture"></a-entity>
+      <a-entity obj-model="obj: #moonlight-obj;" material="src: #moonlight-texture"></a-entity>
+      <a-entity obj-model="obj: #podiums-obj;" material="src: #podiums-texture"></a-entity>
+      <a-entity obj-model="obj: #lamps-obj;" material="src: #lamps-texture; side: double;"></a-entity>
+        
+
+   
+      <a-entity ctm="src: #david-ctm; name:david;"></a-entity>
+
+    
+      <a-entity ctm="src: #female_head-ctm; name:female_head;"></a-entity>
+
+   
+      <a-entity ctm="src: #lion-ctm; name:lion;"></a-entity>
+
+      <a-entity ctm="src: #greek_bust-ctm; name:greek_bust;"></a-entity>
+
+     
+      <a-entity ctm="src: #old_man-ctm; name:old_man;"></a-entity>
+
+   
+      <a-entity ctm="src: #nefertiti-ctm; name:nefertiti;"></a-entity>
+
+     
+      <a-entity ctm="src: #fractal_1-ctm; name:fractal_1;"></a-entity>
+
+   
+      <a-entity ctm="src: #fractal_2-ctm; name:fractal_2;"></a-entity>
+
+      <a-entity ctm="src: #fractal_3-ctm; name:fractal_3;"></a-entity>
+
+     
+      <a-entity ctm="src: #female_helmet-ctm; name:female_helmet;"></a-entity>
+
+     
+      <a-entity ctm="src: #monk_uv-ctm; name:monk_uv;"></a-entity> -->
+  <!--   <a-entity obj-model="obj: #hall-obj;" material="src: #hall-texture" id="hall" scale="0.5 0.5 0.5"></a-entity> -->
+  
+        
+        <a-entity gltf-model="#MONOLITE"
+            scale="0.08 0.08 0.08"
+            rotation="-20 0 0" 
+            position="8 1.7 0"
+                  visible="true"></a-entity>
+        
+       <!-- <a-entity gltf-model="#galleria"
+            scale="0.049 0.049 0.049"
+            rotation="0 0 0" 
+            position="0 0 0"
+                  visible="true"></a-entity> -->
+      
+      <a-entity obj-model="obj: #galleria-obj;" material="src: #galleria-texture" normalMap: #galleria_normal-texture id="hall" scale="0.049 0.049 0.049" position="0 0 0"></a-entity>
+          
+        <a-entity gltf-model="#pavimento"
+            scale="1 1 1"
+            rotation="0 0 0" 
+            position="0 0.05 0"
+                  visible="true"></a-entity>
+      
+              <a-entity gltf-model="#pinguino"
+            scale="1 1 1"
+            rotation="0 0 0" 
+            position="0 0.05 0"
+                  visible="true"></a-entity>
+        
+       <a-entity gltf-model="#podio1"
+            scale="0.049 0.049 0.049"
+            rotation="0 0 0" 
+            position="0 0.05 0"
+                  visible="true"></a-entity>
+        <!--
+        <a-entity gltf-model="#pipa" scale="0.8 0.8 0.8"
+                  rotation="0 90 0" 
+                  position="-2.9 1.835 -6.539" 
+                  visible="" 
+                  sound="src: #YOUR-SONG-1;
+        				   on: click;
+        				   volume: 1;
+        				   refDistance: 4;
+        				   rolloffFactor: 4">
+           
+            
+        	<a-entity sound="src: #pipa; autoplay: false" position="1.396 1.525 0"></a-entity> -->
+            
+      <!-- pipa portale -->
+      
+                <a-entity gltf-model="#pipa" class="link2" rotation="0 0 0" link="href: /onclick_pages/Au-claire.html; title: CLICK ME!"  depth="2" height="2.5" width="0.05" material="" geometry="" position="-0.02 1.0332 -12.99099"  >   <a-text id="portale1" align="center" position="0 1.8 0" rotation="0 0 0" value="click me!" text=""></a-text>
+           
+            
+          <a-entity obj-model="obj: #good_samaritan-obj;"  position="0 0 0" material="src: #good_samaritan-texture"></a-entity>
+<!--
+      <a-entity mocap="head: #am_threejs_CEC_BODY_1_HEAD-mocap;
+                       left: #am_threejs_CEC_BODY_1_LEFT-mocap;
+                       right: #am_threejs_CEC_BODY_1_RIGHT-mocap;
+                       totalFrames:645;
+                       torsoPosition: 0 -0.4 0.05"
+                position=" -3 1 6.5"
+                rotation="0 -90 0">
+      </a-entity>
+
+      <a-entity mocap="head: #am_threejs_CEC_BODY_2_HEAD-mocap;
+                       left: #am_threejs_CEC_BODY_2_LEFT-mocap;
+                       right: #am_threejs_CEC_BODY_2_RIGHT-mocap;
+                       totalFrames:626;
+                       torsoPosition: 0.0 -0.4 0.05"
+                position=" -3 1 9.2"
+                rotation="0 -90 0">
+      </a-entity>
+
+      <a-entity mocap="head: #am_threejs_CEC_BODY_3_HEAD-mocap;
+                       left: #am_threejs_CEC_BODY_3_LEFT-mocap;
+                       right: #am_threejs_CEC_BODY_3_RIGHT-mocap;
+                       totalFrames:600;
+                       torsoPosition: 0 -0.4 0.05"
+                position=" -3 1 12.2"
+                rotation="0 -90 0">
+      </a-entity>
+
+      <a-entity mocap="head: #am_threejs_CEC_BODY_4_HEAD-mocap;
+                       left: #am_threejs_CEC_BODY_4_LEFT-mocap;
+                       right: #am_threejs_CEC_BODY_4_RIGHT-mocap;
+                       totalFrames:7050;
+                       torsoPosition: -0.05 -0.4 0.0"
+                position=" -3 1 4"
+                rotation="0 0 0">
+      </a-entity>
+-->
+
+    
+
+    </a-scene>
+
+    <script src="main.js"></script>
+
+</body>
+</html>

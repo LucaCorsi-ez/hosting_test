@@ -1,0 +1,35 @@
+# Blender MTL File: 'alberi foglia e scacchi.blend'
+# Material Count: 3
+
+newmtl Materiale
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd E:\\Tesi\\BLENDER File\\alberi foglia e scacchi\\texture ricalcate\\scacchi\\ricalco terzo.png
+
+newmtl SCACCO_2
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd E:\\Tesi\\BLENDER File\\alberi foglia e scacchi\\texture ricalcate\\scacchi\\RICALCO SCACCO 2.png
+
+newmtl scacco
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd E:\\Tesi\\BLENDER File\\alberi foglia e scacchi\\texture ricalcate\\scacchi\\scacco ww1.png

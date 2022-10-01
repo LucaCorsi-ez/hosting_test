@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- Meta -->
+    <meta charset="utf-8">
+    <title>Virtual Reality Museum in A-Frame</title>
+
+   <meta property="og:title" content="WebXR demo - esame tecniche di modellazione 3D" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://metaverseevirtualart.com" />
+    <meta property="og:image" content="" />
+    <meta property="og:description" content="WebXR demo - esame tecniche di modellazione 3D" />
+	<meta property="article:tag" content="WebXR" />
+	<meta property="article:tag" content="A-Frame" />
+	<meta property="article:section" content="Virtual Reality" />
+
+    <meta name="twitter:card" content="summary_large_image">
+
+    <meta name="twitter:title" content="WebXR demo - esame tecniche di modellazione 3D">
+    <meta name="twitter:description" content="WebXR demo - esame tecniche di modellazione 3D">
+    <meta name="twitter:image" content="">
+	<!-- Favicon -->
+    <link rel="icon" href="img/luca.png">
+	
+	<!-- Web Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
+	
+    <meta name="description" content="Virtual Gallery by Luca Corsi/VRGallery https://metaversevirtualart.com">
+	<meta name="Luca Corsi" content="">
+		
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link href="loading.css" rel="stylesheet" type="text/css">
+
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.0/dist/aframe-extras.min.js"></script>
+	<script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@5.0.0/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://rocketvirtual.com/aframePACKAGE/aframe-teleport-controls-master/dist/aframe-teleport-controls.js"></script>
+
+    <script src="js/lzma.js"></script>
+    <script src="js/ctm.js"></script>
+    <script src="js/CTMLoader.js"></script>
+
+    <script src="js/aframe-teleport-controls.min.js"></script>
+    <script src="js/spheres_anim.js"></script>
+    <script src="js/anim_1.js"></script>
+    <script src="js/anim_2.js"></script>
+    <script src="js/mocap.js"></script>
+    <script src="js/envMapMaterial.js"></script>
+    <script src="js/ctm_component.js"></script>
+    <script src="js/mobile_component.js"></script>
+    
+          <script>
+AFRAME.registerComponent('a-frame-to-html', {
+  init: function () {
+    let box = document.querySelector('#MONOLITE')
+    let modal = document.querySelector('.container')
+
+    box.addEventListener('click', (e) => {
+      modal.classList.add("show")
+    })
+  }
+});
+</script>
+    
+    <!-- audio-controls -->
+    <script>
+(function(){   
+  if (window.addEventListener)
+  {
+    window.addEventListener("load", nascondi_loading_screen, false);    
+  }else{
+    window.attachEvent("onload", nascondi_loading_screen);
+  }
+})();
+function nascondi_loading_screen()
+{
+  document.getElementById("loading_screen").style.display = 'none';
+}
+</script>
+
+
+  </head>
+
+  <body>
+      
+
+<div id="loading_screen">
+  <h1>Loading...</h1> 
+  <p>La pagina è in caricamento<br/>
+  Resta connesso e non cambiare sito!</p>
+</div>
+
+    <div id="container" class="container">
+      <div class="info">
+        <div class="company"><a href="http://www.metaversevirtualart.com" target="_blank">Luca Corsi</a></div>
+        <div class="title">VR Gallery</div>
+        <div class="logo"><a href="https://www.metaversevirtualart.com" target="_blank"><img src="img/luca.png"></a></div>
+        <a class="button" id="start_experience" href="#">Avvia Esprerienza</a>
+        <div class="instructions">
+          <div><strong>VR</strong>: Hand controllers e teletrasporto con "trigger".</div>
+          <div><strong>Desktop</strong>: Tatiera (WASD/freccie) e mouse.</div>
+          <div><strong>Mobile</strong>: touch controls.</div>
+        </div>
+      </div>
+    </div>
+
+    <!--<a-scene stats>-->
+
+    <a-scene>
+  	<a-entity movement-controls="speed: 2; constrainToNavMesh: true" position="0 0 0"
+                      >
+			<!-- Camera -->
+			<a-entity id="cam" camera position="0 10 0"
+					  look-controls="pointerLockEnabled: true"
+                      touch-controls="">
+				<a-cursor></a-cursor>
+			</a-entity>
+		</a-entity>
+        
+     
+        
+        
+    <a-entity data-brackets-id="3238" gltf-model="models/nav-mesh%20au.gltf" nav-mesh="" scale="" rotation="0 90 0" position="-54.33785 -2.24812 -46.62845" visible="false"></a-entity>
+        
+        
+        
+        <a-asset-item id="benvenuti" src="infoBottoni/benvenuti.glb"></a-asset-item>
+        
+    
+        
+        
+        
+     	<a-box id="yellow" color="#FF0000" position="-3.0016 1.03358 -1.42353" class="ui" href="https://www.metaversevirtualart.com" target="_blank"  scale="0.25 0.25 0.05"
+			   event-set__enter="_event: mouseenter; material.color: #FF0000"
+			   event-set__leave="_event: mouseleave; material.color: #FFAA00" 
+			   event-set__scale="_target: #pise; _event: click; scale: 1 1 1"
+			   event-set__position="_target: #grey; _event: click; position: -3.0016 1.03358 -1.38">
+		</a-box>
+		
+		<!-- Blue Box | Morphing Panel -->
+		          <a-entity gltf-model="#benvenuti"  id="pise"
+            scale=" 0 0 0"
+            rotation="0 0 0" 
+            visible="true"></a-entity>
+        
+		<!-- Grey Plane | Reset/Close -->
+
+		<a-plane id="grey" color="#fff" position="-3.0016 1.03358 -3" scale="0.25 0.25 0.5" class="ui"
+			 	 event-set__enter="_event: mouseenter; material.color: #FF0000"
+				 event-set__leave="_event: mouseleave; material.color: #fff"
+				 event-set__position="_event: click; position: -3.0016 1.03358 -1.5"
+				 event-set__scale="_target: #pise; _event: click; scale: 0 0 0">
+		</a-plane>
+        
+<!-- 
+        <a-box id="portale" class="link" rotation="0 90 0" link="href: Au-claire.html ; title: Roomkey" color="brown" depth="2" height="2.5" width="0.05" material="" geometry="" position="-0.02 1.0332 -12.99099" scale="0.03 0.8 0.8">
+     <a-text id="portale1" align="center" position="0 1.8 0" rotation="0 -90 0" value="Roomkey" text=""></a-text>
+    </a-box>
+-->
+        
+  
+
+   
+      <a-entity light="type: ambient; color: #FFF; intensity: 0.88"></a-entity>
+   
+        
+
+      <!-- Custom components with animations 
+      <a-entity spheres material="shader: envMapMaterial; src:textures/cube/hall/; "></a-entity>
+      <a-entity anim_1></a-entity>
+      <a-entity anim_2></a-entity>
+
+      <!-- - Custom components with animations --> 
+
+      <a-assets>
+        <a-mixin id="checkpoint"></a-mixin>
+        <a-mixin id="checkpoint-hovered" color="#6CEEB5"></a-mixin>
+
+
+        <img id="sky_sphere-texture" src="textures/sky_sphere.jpg">
+
+        <a-sound src="audio/satie.mp3"
+                 autoplay="true"
+                 loop="true"
+                 position="1 1 0"></a-sound>
+
+        <a-sound src="audio/satie.mp3"
+                 autoplay="true"
+                 loop="true"
+                 position="1 1 10"></a-sound>
+          
+            <!-- audio-track -->
+          
+          <audio id="track_pipa" src="audio/satie.mp3"></audio>
+
+
+        <!-- floor
+        <a-asset-item id="floor-obj" src="models/floor.obj"></a-asset-item>
+        <img id="floor-texture" src="textures/floor.jpg">
+        <img id="floor_normal-texture" src="textures/floor_normal.jpg">
+        <!-- - floor -->
+
+        <!-- hall 
+        <a-asset-item id="hall-obj" src="models/hall.obj"></a-asset-item>
+        <img id="hall-texture" src="textures/hall.jpg">
+        <!--<img id="hall_normal-texture" src="textures/hall_normal.jpg">-->
+        <!-- - hall -->
+          
+             <div id="container" class="container">
+      <div class="info">
+        <div class="company"><a href="http://www.metaversevirtualart.com" target="_blank">metaversevirtualart.com</a></div>
+        <div class="title">VR Gallery</div>
+        <div class="logo"><a href="http://www.metaversevirtualart.com" target="_blank"><img src="img/luca.png"></a></div>
+        <a class="button" id="start_experience" href="#">start experience</a>
+        <div class="instructions">
+          <div><strong>VR</strong>: Hand controllers and teleport with trigger.</div>
+          <div><strong>Desktop</strong>: Keyboard (WASD/arrows) and mouse.</div>
+          <div><strong>Mobile</strong>: Gaze cursor and teleportation.</div>
+        </div>
+      </div>
+    </div>
+
+          
+          
+          
+      
+
+      </a-assets>
+
+
+        
+
+    
+  
+              
+ <a-asset-item id="auclaire-obj" src="models/Villetta.obj"></a-asset-item>
+        <img id="auclaire-texture" src="textures/hall.jpg">
+        
+   <a-asset-item id="Nav-Mesh" src="models/nav-mesh%20au.gltf"></a-asset-item>
+
+      <a-sky color="#EEEEFF" material="src: img/sfondo.png" scale="20 20 20"></a-sky>
+
+        
+  <a-box id="cassa" color="#FFAA00" position="-84 0.5 -49.9" scale="40 40 40" sound="src: #audiochiaro" visible="false"> </a-box>
+			
+			<a-sphere color="#00AA00" radius="0.25" position="-1 1 0" play scale="3 3 3" visible="true">
+        <a-text data-brackets-id="4463" align="center" position="0 1 0" rotation="0 0 0" value="play" text=""></a-text>
+        </a-sphere> 
+        
+			 
+			<a-sphere color="#AA0000" radius="0.25" position="1 1 0" stop scale="3 3 3" visible="true">
+         <a-text data-brackets-id="4463" align="center" position="0 1 0" rotation="0 0 0" value="stop" text=""></a-text>
+        </a-sphere> 
+        
+        
+        <a-entity obj-model="obj: #auclaire-obj;" material="src: #auclaire-texture" id="auclaire" scale="0.3 0.3 0.3" position="-33.84007 1 -43.21146" rotation="0 89.62 0"></a-entity>
+        
+        
+        
+        
+        
+        
+        <a-entity obj-model="obj: #parquet-obj;" material="src: #parquet-texture" id="parquet" scale="0.049 0.049 0.049" position="-0.02 0.03314 -0.0037" rotation="0 0 0"></a-entity>
+        
+        
+    
+        
+          
+      
+      
+            
+            <a-entity obj-model="#Auclairedelune-obj" class="link2" rotation="0 0 0" link="href: /Au-claire-mobile.html; title: CLICK ME!"  scale="0.049 0.049 0.049" position="-0.02 0.03314 -0.0037" >   <a-text id="portale1" align="center" position="0 1.8 0" rotation="0 0 0" value="click me!" text="pirippi"></a-text>
+            
+      
+            
+            
+            
+
+
+    
+
+    </a-scene>
+
+    <script src="main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- Meta -->
+    <meta charset="utf-8">
+    <title>Virtual Reality Museum in A-Frame</title>
+
+    <meta property="og:title" content="Virtual Reality Museum in A-Frame" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://blog.r23.de/museum/" />
+    <meta property="og:image" content="https://blog.r23.de/museum/screenshots/thehall1.jpg" />
+    <meta property="og:description" content="WebVR demo that displays art " />
+	<meta property="article:tag" content="WebVR" />
+	<meta property="article:tag" content="A-Frame" />
+	<meta property="article:section" content="Virtual Reality" />
+
+    <meta name="twitter:card" content="summary_large_image">
+
+    <meta name="twitter:title" content="Virtual Reality Museum in A-Frame">
+    <meta name="twitter:description" content="WebVR demo that displays art ">
+    <meta name="twitter:image" content="https://blog.r23.de/museum/screenshots/thehall1.jpg">
+
+	<!-- Favicon -->
+    <link rel="icon" href="favicon.png">
+	
+	<!-- Web Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
+	
+    <meta name="description" content="Virtual-Reality-Museum forked from Cecropia/thehallaframe https://cecropia.github.io/thehallaframe/">
+	<meta name="author" content="">
+		
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.0/dist/aframe-extras.min.js"></script>
+	<script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@5.0.0/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://rocketvirtual.com/aframePACKAGE/aframe-teleport-controls-master/dist/aframe-teleport-controls.js"></script>
+
+    <script src="js/lzma.js"></script>
+    <script src="js/ctm.js"></script>
+    <script src="js/CTMLoader.js"></script>
+
+    <script src="js/aframe-teleport-controls.min.js"></script>
+    <script src="js/spheres_anim.js"></script>
+    <script src="js/anim_1.js"></script>
+    <script src="js/anim_2.js"></script>
+    <script src="js/mocap.js"></script>
+    <script src="js/envMapMaterial.js"></script>
+    <script src="js/ctm_component.js"></script>
+    <script src="js/mobile_component.js"></script>
+    
+          <script>
+AFRAME.registerComponent('a-frame-to-html', {
+  init: function () {
+    let box = document.querySelector('#MONOLITE')
+    let modal = document.querySelector('.container')
+
+    box.addEventListener('click', (e) => {
+      modal.classList.add("show")
+    })
+  }
+});
+</script>
+
+  </head>
+
+  <body>
+      
+
+
+
+    <div id="container" class="container">
+      <div class="info">
+        <div class="company"><a href="http://www.metaversevirtualart.com" target="_blank">Luca Corsi</a></div>
+        <div class="title">VR Gallery</div>
+        <div class="logo"><a href="https://www.metaversevirtualart.com" target="_blank"><img src="img/luca.png"></a></div>
+        <a class="button" id="start_experience" href="#">Avvia Esprerienza</a>
+        <div class="instructions">
+          <div><strong>VR</strong>: Hand controllers e teletrasporto con "trigger".</div>
+          <div><strong>Desktop</strong>: Tatiera (WASD/freccie) e mouse.</div>
+          <div><strong>Mobile</strong>: touch controls.</div>
+        </div>
+      </div>
+    </div>
+
+    <!--<a-scene stats>-->
+
+    <a-scene>
+        <a-entity ></a-entity>
+<a-entity></a-entity>
+        
+        <a-entity class="leftController"  hand-controls="hand: left;" teleport-controls="button: trigger; curveShootingSpeed: 11; collisionEntities: #Nav-Mesh;" visible="true" ></a-entity>
+        
+        
+        <a-entity class="rightController" laser-controls raycaster="showLine: trude; far: 10; interval: 0; object: .clickable, a-link;" line="color: #7cfc00; opacity: 0.5" visible="true"></a-entity>
+        
+        <a-entity movement-controls="speed: 3; constrainToNavMesh: true" position="0 0 0">
+			<!-- Camera -->
+			<a-entity camera position="0 5 0"
+					  look-controls="pointerLockEnabled: true">
+				<a-cursor></a-cursor>
+			</a-entity>
+		</a-entity>
+     
+        
+        <!-- Nav-Mesh -->
+           <a-asset-item id="Nav-Mesh" src="models/nav-mesh%20au.gltf"></a-asset-item>
+        
+          
+        
+        <a-entity data-brackets-id="3238" gltf-model="models/nav-mesh%20au.gltf" nav-mesh="" scale="" rotation="0 90 0" position="-54.33785 -2.24812 -46.62845" visible="false"></a-entity>
+        
+    
+        
+       
+      	<a-box id="yellow" color="#FF0000" position="-3.0016 1.03358 -1.42353" class="ui" href="https://www.metaversevirtualart.com" target="_blank"  scale="0.25 0.25 0.05"
+			   event-set__enter="_event: mouseenter; material.color: #FF0000"
+			   event-set__leave="_event: mouseleave; material.color: #FFAA00" 
+			   event-set__scale="_target: #blue; _event: click; scale: 1 1 1"
+			   event-set__position="_target: #grey; _event: click; position: -3.0016 1.03358 -1.38">
+		</a-box>
+		
+		<!-- Blue Box | Morphing Panel -->
+		<a-box id="blue" color="#00AAFF" position="0 3 -5" opacity="1"></a-box>
+		<!-- Grey Plane | Reset/Close -->
+
+		<a-plane id="grey" color="#fff" position="-3.0016 1.03358 -3" scale="0.25 0.25 0.5" class="ui"
+			 	 event-set__enter="_event: mouseenter; material.color: #FF0000"
+				 event-set__leave="_event: mouseleave; material.color: #fff"
+				 event-set__position="_event: click; position: -3.0016 1.03358 -1.5"
+				 event-set__scale="_target: #blue; _event: click; scale: 0 0 0">
+		</a-plane>
+        
+
+        <a-box class="link" rotation="0 90 0" link="href: /Virtual-Reality-Museum-master/onclick_pages/auclaire2.html; 
+     title:Roomkey;" color="yellow" depth="2" height="2.5" width="0.05" material="" geometry="" rotation="0 90 0" scale="2 2 2" position="-111.57712 2.47449 -50.79689">
+            
+
+     <a-text data-brackets-id="4463" align="center" position="0 1.8 0" rotation="0 90 0" value="Roomkey" text=""></a-text>
+            
+        
+     <a-text align="center" position="0 1.8 0" rotation="0 -90 0" value="Roomkey" text=""></a-text>
+    </a-box>
+        <a-box aabb-collider="objects: .link" material="" geometry=""> </a-box>
+        
+      <a-entity mobile></a-entity>
+
+      <a-entity light="type: directional; color: #FFF; intensity: 0.5" position="2 20 0"></a-entity>
+      <a-entity light="type: ambient; color: #FFF"></a-entity>
+
+
+
+        <img id="sky_sphere-texture" src="textures/sky_sphere.jpg">
+
+        <a-sound src="audio/84529__cmusounddesign__02-museum.ogg"
+                 autoplay="true"
+                 loop="true"
+                 position="1 1 0"></a-sound>
+
+        <a-sound src="audio/219462__cediez__musee-victoria-londres-grand-escalier.ogg"
+                 autoplay="true"
+                 loop="true"
+                 position="1 1 10"></a-sound>
+
+
+        
+     <a-asset-item id="MONOLITE" src="models/mela.gltf"></a-asset-item>
+          
+               <a-asset-item id="pipa" src="models/CECI%20N-EST.gltf"></a-asset-item>
+              <a-asset-item id="claire" src="models/robin%20hood.gltf"></a-asset-item>
+       
+
+          
+           <a-asset-item id="MONOLITE" src="models/mela.gltf"></a-asset-item>
+        <!-- - mocaps -->
+
+  
+
+      <a-sky color="#EEEEFF" material="src: img/sky2.jpg" scale="20 20 20"></a-sky>
+
+        
+      
+        <a-entity gltf-model="#MONOLITE"
+            scale="0.08 0.08 0.08"
+            rotation="-20 0 0" 
+            position="8 1.7 0"
+                  visible="true"></a-entity>
+        
+        
+        <a-entity gltf-model="#pipa" scale="0.8 0.8 0.8" rotation="0 90 0" position="-3.04552 2.01051 4.26423" visible=""></a-entity>
+        
+           <a-entity gltf-model="#claire" scale="" rotation="0 90 0" position="0 0 0 " visible=""></a-entity>
+        
+        
+        <a-light type="ambient" color="#222" intensity="1.8"></a-light>
+
+
+    
+
+    </a-scene>
+
+    <script src="main.js"></script>
+
+</body>
+</html>

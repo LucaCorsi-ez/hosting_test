@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- Meta -->
+    <meta charset="utf-8">
+    <title>René Magritte Experience VR</title>
+
+   <meta property="og:title" content="WebXR demo - esame Progettazione multimediale" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://metaverseevirtualart.com" />
+    <meta property="og:image" content="" />
+    <meta property="og:description" content="WebXR demo - esame Progettazione multimediale" />
+	<meta property="article:tag" content="WebXR" />
+	<meta property="article:tag" content="A-Frame" />
+	<meta property="article:section" content="Virtual Reality" />
+
+    <meta name="twitter:card" content="summary_large_image">
+
+    <meta name="twitter:title" content="WebXR demo - esame Progettazione multimediale">
+    <meta name="twitter:description" content="WebXR demo - esame Progettazione multimediale">
+    <meta name="twitter:image" content="">
+	<!-- Favicon -->
+    <link rel="icon" href="img/luca.png">
+	
+	<!-- Web Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
+	
+    <meta name="description" content="Virtual Gallery by Luca Corsi/VRGallery https://metaversevirtualart.com">
+	<meta name="Luca Corsi" content="">
+		
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link href="loading.css" rel="stylesheet" type="text/css">
+
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.0/dist/aframe-extras.min.js"></script>
+	<script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@5.0.0/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://rocketvirtual.com/aframePACKAGE/aframe-teleport-controls-master/dist/aframe-teleport-controls.js"></script>
+
+    <script src="js/lzma.js"></script>
+    <script src="js/ctm.js"></script>
+    <script src="js/CTMLoader.js"></script>
+
+    <script src="js/aframe-teleport-controls.min.js"></script>
+    <script src="js/spheres_anim.js"></script>
+    <script src="js/anim_1.js"></script>
+    <script src="js/anim_2.js"></script>
+    <script src="js/mocap.js"></script>
+    <script src="js/envMapMaterial.js"></script>
+    <script src="js/ctm_component.js"></script>
+    <script src="js/mobile_component.js"></script>
+    
+          <script>
+AFRAME.registerComponent('a-frame-to-html', {
+  init: function () {
+    let box = document.querySelector('#MONOLITE')
+    let modal = document.querySelector('.container')
+
+    box.addEventListener('click', (e) => {
+      modal.classList.add("show")
+    })
+  }
+});
+</script>
+    
+    <!-- audio-controls -->
+    <script>
+(function(){   
+  if (window.addEventListener)
+  {
+    window.addEventListener("load", nascondi_loading_screen, false);    
+  }else{
+    window.attachEvent("onload", nascondi_loading_screen);
+  }
+})();
+function nascondi_loading_screen()
+{
+  document.getElementById("loading_screen").style.display = 'none';
+}
+</script>
+
+
+  </head>
+
+  <body>
+      
+
+<div id="loading_screen">
+  <h1>Loading...</h1> 
+  <p>La pagina è in caricamento<br/>
+  Resta connesso e non cambiare sito!</p>
+</div>
+
+    <div id="container" class="container">
+      <div class="info">
+        <div class="company"><a href="http://www.metaversevirtualart.com" target="_blank">Luca Corsi</a></div>
+        <div class="title">VR Gallery</div>
+        <div class="logo"><a href="https://www.metaversevirtualart.com" target="_blank"><img src="img/luca.png"></a></div>
+        <a class="button" id="start_experience" href="#">Avvia Esprerienza</a>
+        <div class="instructions">
+          <div><strong>VR</strong>: Hand controllers e teletrasporto con "trigger".</div>
+          <div><strong>Desktop</strong>: Tatiera (WASD/freccie) e mouse.</div>
+          <div><strong>Mobile</strong>: touch controls.</div>
+        </div>
+      </div>
+    </div>
+
+    <!--<definzione camera e movimenti>-->
+
+    <a-scene>
+  	<a-entity movement-controls="speed: 0.2; constrainToNavMesh: true" position="0 0 0"
+                      >
+			<!-- Camera -->
+			<a-entity id="cam" camera position="0 2.2 0"
+					  look-controls="pointerLockEnabled: true"
+                      touch-controls="">
+				<a-cursor></a-cursor>
+			</a-entity>
+		</a-entity>
+        
+     
+        
+        <!-- Nav-Mesh -->
+        
+      <a-asset-item id="Nav-Mesh" src="unity/nav-mesh-museo.gltf"></a-asset-item>
+        
+        
+        
+          <a-entity gltf-model="#Nav-Mesh" 
+            nav-mesh
+            scale=" 0.9 0.9 0.9"
+            rotation="0 0 0" 
+            visible="false"></a-entity>
+        
+        
+        <a-asset-item id="benvenuti" src="infoBottoni/benvenuti.glb"></a-asset-item>
+        
+    <a-asset-item id="scritta" src="models/Text.glb"></a-asset-item>
+        
+        
+        
+      <!--  
+     	<a-box id="yellow" color="#FF0000" position="-3.0016 1.03358 -1.42353" class="ui" href="https://www.metaversevirtualart.com" target="_blank"  scale="0.25 0.25 0.05"
+			   event-set__enter="_event: mouseenter; material.color: #FF0000"
+			   event-set__leave="_event: mouseleave; material.color: #FFAA00" 
+			   event-set__scale="_target: #pise; _event: click; scale: 1 1 1"
+			   event-set__position="_target: #grey; _event: click; position: -3.0016 1.03358 -1.38">
+		</a-box>
+		
+		<!-- Blue Box | Morphing Panel 
+
+		          <a-entity gltf-model="#benvenuti"  id="pise"
+            scale=" 0 0 0"
+            rotation="0 0 0" 
+            visible="true"></a-entity>
+        
+        
+        
+		<!-- Grey Plane | Reset/Close -->
+
+		<a-plane id="grey" color="#fff" position="-3.0016 1.03358 -3" scale="0.25 0.25 0.5" class="ui"
+			 	 event-set__enter="_event: mouseenter; material.color: #FF0000"
+				 event-set__leave="_event: mouseleave; material.color: #fff"
+				 event-set__position="_event: click; position: -3.0016 1.03358 -1.5"
+				 event-set__scale="_target: #pise; _event: click; scale: 0 0 0">
+		</a-plane>
+        
+<!-- 
+        <a-box id="portale" class="link" rotation="0 90 0" link="href: Au-claire.html ; title: Roomkey" color="brown" depth="2" height="2.5" width="0.05" material="" geometry="" position="-0.02 1.0332 -12.99099" scale="0.03 0.8 0.8">
+     <a-text id="portale1" align="center" position="0 1.8 0" rotation="0 -90 0" value="Roomkey" text=""></a-text>
+    </a-box>
+-->
+        
+  
+
+   
+      <a-entity light="type: ambient; color: #FFF; intensity: 0.88"></a-entity>
+   
+        
+
+      <!-- Custom components with animations 
+      <a-entity spheres material="shader: envMapMaterial; src:textures/cube/hall/; "></a-entity>
+      <a-entity anim_1></a-entity>
+      <a-entity anim_2></a-entity>
+
+      <!-- - Custom components with animations --> 
+
+      <a-assets>
+        <a-mixin id="checkpoint"></a-mixin>
+        <a-mixin id="checkpoint-hovered" color="#6CEEB5"></a-mixin>
+
+
+        <img id="sky_sphere-texture" src="textures/sky_sphere.jpg">
+
+        <a-sound src="audio/satie.mp3"
+                 autoplay="true"
+                 loop="true"
+                 position="1 1 0"></a-sound>
+
+        <a-sound src="audio/satie.mp3"
+                 autoplay="true"
+                 loop="true"
+                 position="1 1 10"></a-sound>
+          
+            <!-- audio-track -->
+          
+          <audio id="track_pipa" src="audio/satie.mp3"></audio>
+
+
+        <!-- floor
+        <a-asset-item id="floor-obj" src="models/floor.obj"></a-asset-item>
+        <img id="floor-texture" src="textures/floor.jpg">
+        <img id="floor_normal-texture" src="textures/floor_normal.jpg">
+        <!-- - floor -->
+
+        <!-- hall 
+        <a-asset-item id="hall-obj" src="models/hall.obj"></a-asset-item>
+        <img id="hall-texture" src="textures/hall.jpg">
+        <!--<img id="hall_normal-texture" src="textures/hall_normal.jpg">-->
+        <!-- - hall -->
+          
+             <div id="container" class="container">
+      <div class="info">
+        <div class="company"><a href="http://www.metaversevirtualart.com" target="_blank">metaversevirtualart.com</a></div>
+        <div class="title">VR Gallery</div>
+        <div class="logo"><a href="http://www.metaversevirtualart.com" target="_blank"><img src="img/luca.png"></a></div>
+        <a class="button" id="start_experience" href="#">start experience</a>
+        <div class="instructions">
+          <div><strong>VR</strong>: Hand controllers and teleport with trigger.</div>
+          <div><strong>Desktop</strong>: Keyboard (WASD/arrows) and mouse.</div>
+          <div><strong>Mobile</strong>: Gaze cursor and teleportation.</div>
+        </div>
+      </div>
+    </div>
+
+           <a-asset-item id="galleria-obj" src="models/demasigaleria.obj"></a-asset-item>
+        <img id="galleria-texture" src="textures/Piano.020_Piano.1Surface_Color.png">
+          
+          <a-asset-item id="info-galleria-obj" src="models/infomuseo.obj"></a-asset-item>
+        <img id="info-galleria-texture" src="textures/istruzioni_Tavola%20disegno%201.png">
+
+        <img id="galleria_normal-texture" src="textures/">
+          
+          
+        <!-- - hall -->
+ 
+          
+           <a-asset-item id="sfondocappotto-obj" src="demasi/modelli/sfondocappotto.obj"></a-asset-item>
+        <img id="sfondocappotto-texture" src="demasi/texture/background%20Uomo%20mela.png">
+          
+           <a-asset-item id="testamela-obj" src="demasi/modelli/MELA.obj"></a-asset-item>
+        <img id="testamela-texture" src="demasi/texture/melatexture.png">
+          
+          <a-asset-item id="cappotto-obj" src="demasi/modelli/vestito.obj"></a-asset-item>
+        <img id="cappotto-texture" src="demasi/texture/ricalco%20vestiti.png">
+             
+          <a-asset-item id="sfondopipa-obj" src="demasi/modelli/sfondo%20pipa.obj"></a-asset-item>
+        <img id="sfondopipa-texture" src="demasi/texture/sfondo%20pipa.jpg">  
+          
+          
+          
+          
+          <a-asset-item id="pavimento-obj" src="models/pavimento.obj"></a-asset-item>
+        <img id="pavimento-texture" src="textures/pavimento3.png">
+          
+          <a-asset-item id="quadri-obj" src="models/quadri.obj"></a-asset-item>
+        <img id="quadri-texture" src="textures/">
+        
+          
+          <!-- quadri obj -->
+          
+          <a-asset-item id="les-amants-obj" src="demasi/modelli/les%20amants.obj"></a-asset-item>
+        <img id="les-amants-texture" src="demasi/texture/the%20lovers.jpg">  
+          
+           <a-asset-item id="les-amants-info-obj" src="models/infoopere/theloversinfo.obj"></a-asset-item>
+        <img id="les-amants-info-texture" src="demasi/texture/info1.png">  
+          
+          <a-asset-item id="falsospecchio-obj" src="demasi/modelli/il%20falso%20specchio.obj"></a-asset-item>
+        <img id="falsospecchio-texture" src="demasi/texture/il%20falso%20specchio.jpg">  
+          
+            <a-asset-item id="infofalsospecchio-obj" src="models/INFOFALSOSPECCHIO.obj"></a-asset-item>
+        <img id="infofalsospecchio-texture" src="textures/infoopere/faLSO%20SPECCHIO_Tavola%20disegno%201.png">  
+          
+          <a-asset-item id="ombrello-obj" src="demasi/modelli/ombrello.obj"></a-asset-item>
+        <img id="ombrello-texture" src="demasi/texture/ombrello.png">
+          
+          <a-asset-item id="info-ombrello-obj" src="models/infoombrello.obj"></a-asset-item>
+        <img id="info-ombrello-texture" src="demasi/texture/infoombrello_Tavola%20disegno%201.png">
+          
+          <a-asset-item id="testone-obj" src="demasi/modelli/testone.obj"></a-asset-item>
+        <img id="testone-texture" src="demasi/texture/testone.jpeg">
+          
+             <a-asset-item id="infotestone-obj" src="models/INFOTESTA.obj"></a-asset-item>
+        <img id="infotestone-texture" src="textures/infoopere/The%20art%20of%20living_Tavola%20disegno%201.png">
+          
+          <a-asset-item id="voice-obj" src="demasi/modelli/the%20voice%20of%20space.obj"></a-asset-item>
+        <img id="voice-texture" src="demasi/texture/la%20voce%20dell'aria.jpg">
+          
+          <a-asset-item id="info-voice-obj" src="models/infosfere.obj"></a-asset-item>
+        <img id="info-voice-texture" src="demasi/texture/info1.png">
+          
+          <a-asset-item id="foglierosse-obj" src="demasi/modelli/foglierosse.obj"></a-asset-item>
+        <img id="foglierosse-texture" src="demasi/texture/foglierosse.png">
+          
+           <a-asset-item id="info-foglierosse-obj" src="models/infofoglie.obj"></a-asset-item>
+        <img id="info-foglierosse-texture" src="demasi/texture/info1.png">
+          
+          
+            <a-asset-item id="senzavolto-obj" src="demasi/modelli/senzavolto.obj"></a-asset-item>
+        <img id="senzavolto-texture" src="demasi/texture/senzavolto.jpg">
+          
+            <a-asset-item id="infosenzavolto-obj" src="models/INFOLANDSCAPE.obj"></a-asset-item>
+        <img id="infosenzavolto-texture" src="textures/infoopere/bauci's%20landscape_Tavola%20disegno%201.png">
+          
+          <a-asset-item id="melaviso-obj" src="demasi/modelli/melaviso.obj"></a-asset-item>
+        <img id="melaviso-texture" src="demasi/texture/magritte.jpeg">
+          
+              <a-asset-item id="infomelaviso-obj" src="models/infodell'uomo.obj"></a-asset-item>
+        <img id="infomelaviso-texture" src="textures/infoopere/ill%20figlio%20dell'uomo_Tavola%20disegno%201.png">
+          
+          <a-asset-item id="auclairedelune-obj" src="demasi/modelli/auclairedelune.obj"></a-asset-item>
+        <img id="auclairedelune-texture" src="demasi/texture/auclairedelune.jpg">
+          
+              <a-asset-item id="foglia-obj" src="models/alberomagritte.obj"></a-asset-item>
+        <img id="foglia-texture" src="textures/foglia%201.png">
+          
+                 <a-asset-item id="scacco1-obj" src="models/ricalcoterzo.obj"></a-asset-item>
+        <img id="scacco1-texture" src="textures/ricalco%20terzo.png">
+     
+                           <a-asset-item id="scacco2-obj" src="models/scaccopiccolo.obj"></a-asset-item>
+        <img id="scacco2-texture" src="textures/RICALCO%20SCACCO%202.png">
+          
+                            <a-asset-item id="scacco3-obj" src="models/SCACCO.obj"></a-asset-item>
+        <img id="scacco3-texture" src="textures/scacco1.png">
+          
+          
+            <a-asset-item id="podio-obj" src="models/podio1.obj"></a-asset-item>
+        <img id="podio-texture" src="textures/podiopixel.png">
+     
+
+        
+         <a-asset-item id="parquet-obj" src="models/parquet.obj"></a-asset-item>
+        <img id="parquet-texture" src="textures/pavimento2.png">
+          
+         <a-asset-item id="pipa" src="models/CECI%20N-EST.gltf"></a-asset-item>
+          
+
+          
+
+      </a-assets>
+
+      <a-sky color="#EEEEFF" material="src: #sky_sphere-texture"></a-sky>
+
+
+        
+
+    
+  
+        <!-- galleria e modelli 3D -->
+       
+        
+           <a-entity obj-model="obj: #galleria-obj;" material="src: #galleria-texture"  id="hall" scale="0.049 0.049 0.049" position="0 0 0"></a-entity>
+        
+           <a-entity obj-model="obj: #info-galleria-obj;" material="src: #info-galleria-texture"  id="hall" scale="0.049 0.049 0.049" position="0 0 0"></a-entity>
+      
+           <a-entity obj-model="obj: #sfondocappotto-obj;" material="src: #sfondocappotto-texture" id="sfondocappotto" scale="0.049 0.049 0.049" position="0.02549 0.03314 -0.0037" rotation="0 0 0"></a-entity>
+        
+           <a-entity obj-model="obj: #cappotto-obj;" material="src: #cappotto-texture" id="appotto" scale="0.049 0.049 0.049" position="0.02549 0.03314 -0.0037" rotation="0 0 0"></a-entity>
+        
+           <a-entity obj-model="obj: #testamela-obj;" material="src: #testamela-texture" id="testamela" scale="0.049 0.049 0.049" position="0.02549 0.03314 -0.0037" rotation="0 0 0"></a-entity>
+        
+           <a-entity obj-model="obj: #sfondopipa-obj;" material="src: #sfondopipa-texture" id="sfondopipa" scale="0.049 0.049 0.049" position="0.02549 0.03314 -0.0037" rotation="0 0 0"></a-entity>
+        
+           <a-entity obj-model="obj: #testamela-obj;" material="src: #testamela-texture" id="mela1" scale="0.3 0.3 0.3" position="-9.35517 -16.638 50.37325" rotation="0 0 0"></a-entity>
+        
+           <a-entity obj-model="obj: #testamela-obj;" material="src: #testamela-texture" id="mela2" scale="0.3 0.3 0.3" position="9.25171 -16.62228 -50.40086" rotation="0 180 0"></a-entity>
+        
+                
+           <a-entity obj-model="obj: #foglia-obj;" material="src: #foglia-texture" id="foglia" scale="0.4 0.4 0.4" position="3.33367 2.23341 -2.44342" rotation="0 180 0"></a-entity>
+      
+                        
+           <a-entity obj-model="obj: #scacco1-obj;" material="src: #scacco1-texture" id="foglia1" scale="0.3 0.3 0.3" position="-4.45167 2.08758 -2.22273"  rotation="0 180 0"></a-entity>
+        
+            <a-entity obj-model="obj: #scacco2-obj;" material="src: #scacco2-texture" id="foglia2" scale="0.3 0.3 0.3" position="-4.21129 2.10294 -1.77601" rotation="0 180 0"></a-entity>
+       
+                 <a-entity obj-model="obj: #scacco3-obj;" material="src: #scacco3-texture" id="foglia3" scale="0.3 0.3 0.3" position="-4.64953 2.08758 -1.72662"  rotation="0 180 0"></a-entity>
+        
+        <a-entity obj-model="obj: #podio-obj;" material="src: #podio-texture" id="podio" scale="0.049 0.049 0.049" position="-0.0002 -0.01492 0.00933" rotation="0.12 0 0"></a-entity>
+
+  
+          <!-- quadri -->
+        
+            <a-entity obj-model="obj: #les-amants-obj;" material="src: #les-amants-texture" id="les-amants" scale="0.049 0.049 0.049" position="0.02549 0.03314 -0.0037" rotation="0 0 0"></a-entity>
+        
+            <a-entity obj-model="obj: #les-amants-info-obj;" material="src: #les-amants-info-texture" id="les-amantsinfo" scale="0.049 0.049 0.049" position="0.02549 0.03314 -0.0037" rotation="0 0 0"></a-entity>
+          
+          
+            <a-entity obj-model="obj: #falsospecchio-obj;" material="src: #falsospecchio-texture" id="falsospecchio" scale="0.049 0.049 0.049" position="0.02549 0.03314 -0.0037" rotation="0 0 0"></a-entity>
+        
+         <a-entity obj-model="obj: #infofalsospecchio-obj;" material="src: #infofalsospecchio-texture" id="falsospecchio" scale="0.049 0.049 0.049" position="0.02549 0.157 -0.0037" rotation="0 0 0"></a-entity>
+        
+            <a-entity obj-model="obj: #ombrello-obj;" material="src: #ombrello-texture" id="ombrello" scale="0.049 0.049 0.049" position="-0.02 0.03314 -0.0037" rotation="0 0 0"></a-entity>
+        
+            <a-entity obj-model="obj: #info-ombrello-obj;" material="src: #info-ombrello-texture" id="ombrello" scale="0.049 0.049 0.049" position="-0.02 0.03314 -0.0037" rotation="0 0 0"></a-entity>
+        
+            <a-entity obj-model="obj: #testone-obj;" material="src: #testone-texture" id="testone" scale="0.049 0.049 0.049" position="0.02549 0.03314 -0.0037" rotation="0 0 0"></a-entity>
+        
+         <a-entity obj-model="obj: #infotestone-obj;" material="src: #infotestone-texture" id="testone" scale="0.049 0.049 0.049" position="0.01 0.167 -0.0037" rotation="0 0 0"></a-entity>
+        
+            <a-entity obj-model="obj: #voice-obj;" material="src: #voice-texture" id="voice" scale="0.049 0.049 0.049" position="-0.02 0.03314 -0.0037" rotation="0 0 0"></a-entity>
+        
+            <a-entity obj-model="obj: #info-voice-obj;" material="src: #info-voice-texture" id="voice" scale="0.049 0.049 0.049" position="-0.02 0.03314 -0.0037" rotation="0 0 0"></a-entity>
+        
+            <a-entity obj-model="obj: #foglierosse-obj;" material="src: #foglierosse-texture" id="foglierosse" scale="0.049 0.049 0.049" position="-0.02 0.03314 -0.0037" rotation="0 0 0"></a-entity>
+         
+            <a-entity obj-model="obj: #info-foglierosse-obj;" material="src: #info-foglierosse-texture" id="foglierosse" scale="0.049 0.049 0.049" position="-0.02 0.03314 -0.0037" rotation="0 0 0"></a-entity>
+         
+            <a-entity obj-model="obj: #senzavolto-obj;" material="src: #senzavolto-texture" id="senzavolto" scale="0.049 0.049 0.049" position="-0.02 0.03314 -0.0037" rotation="0 0 0"></a-entity>
+        
+          <a-entity obj-model="obj: #infosenzavolto-obj;" material="src: #infosenzavolto-texture" id="senzavolto" scale="0.049 0.049 0.049" position="-0.01 0.167 -0.0037" rotation="0 0 0"></a-entity>
+        
+            <a-entity obj-model="obj: #melaviso-obj;" material="src: #melaviso-texture" id="melaviso" scale="0.049 0.049 0.049" position="-0.01 0.03314 -0.0037" rotation="0 0 0"></a-entity>
+        
+         <a-entity obj-model="obj: #infomelaviso-obj;" material="src: #infomelaviso-texture" id="infomelaviso2" scale="0.049 0.049 0.049" position="-0.01 0.167 -0.0037" rotation="0 0 0"></a-entity>
+        
+            <a-entity obj-model="obj: #auclairedelune-obj;"   class="link2" rotation="0 0 0" link="href: /Au-claire-mobile.html; title: CLICK ME!"  material="src: #auclairedelune-texture" id="auclairedelune" scale="0.049 0.049 0.049" position="-0.02 0.03314 -0.0037" rotation="0 0 0"></a-entity>
+         
+        
+        
+        
+        
+        
+        <a-entity obj-model="obj: #parquet-obj;" material="src: #parquet-texture" id="parquet" scale="0.049 0.049 0.049" position="-0.02 0.03314 -0.0037" rotation="0 0 0"></a-entity>
+        
+        
+    
+         
+        <a-entity gltf-model="#scritta" scale="0.05 0.05 0.05"
+             rotation="180 180 0" position="7.60471 6.725 12.34175"
+                  visible="" ></a-entity>
+        
+        
+   
+        
+            <a-entity gltf-model="#albero" id="albero" scale="1 1 1"
+                  rotation="0 90 0" 
+                  position="-3 2.1 -7.794" 
+                  visible="" ></a-entity>
+          
+          
+      
+        
+        <a-entity gltf-model="#pipa" scale="1 1 1"
+                  rotation="0 90 0" 
+                  position="-3 2.1 -7.794" 
+                  visible="" 
+                  sound="src: #YOUR-SONG-1;
+        				   on: click;
+        				   volume: 1;
+        				   refDistance: 4;
+        				   rolloffFactor: 4">
+        	<a-entity sound="src: #pipa; autoplay: false" position="1.396 1.525 0"></a-entity>
+            
+            
+            
+            <!-- quadro interattivo "Au claire de lune" -->
+            
+            <a-entity obj-model="#Auclairedelune-obj" class="link2" rotation="0 0 0" link="href: /onclick_pages/Au-claire.html; title: CLICK ME!"  scale="0.049 0.049 0.049" position="-0.02 0.03314 -0.0037" >   <a-text id="portale1" align="center" position="0 1.8 0" rotation="0 0 0" value="click me!" text=""></a-text>
+            
+      
+            
+            
+            
+
+
+    
+
+    </a-scene>
+
+    <script src="main.js"></script>
+
+</body>
+</html>

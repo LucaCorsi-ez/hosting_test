@@ -1,0 +1,13 @@
+# Blender MTL File: 'esportazione roboto animato (per peso).blend'
+# Material Count: 1
+
+newmtl cerchio_musetto
+Ns 50.000007
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 1.000000 1.000000 1.000000
+Ni 1.000000
+d 1.000000
+illum 3
+map_Ke texture\\cerchio_musetto.1Surface_Color.png

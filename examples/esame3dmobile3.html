@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- Meta -->
+    <meta charset="utf-8">
+    <title>Virtual Reality Museum in A-Frame</title>
+
+    <meta property="og:title" content="WebXR demo - esame tecniche di modellazione 3D" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://metaverseevirtualart.com" />
+    <meta property="og:image" content="" />
+    <meta property="og:description" content="WebXR demo - esame tecniche di modellazione 3D" />
+	<meta property="article:tag" content="WebXR" />
+	<meta property="article:tag" content="A-Frame" />
+	<meta property="article:section" content="Virtual Reality" />
+
+    <meta name="twitter:card" content="summary_large_image">
+
+    <meta name="twitter:title" content="WebXR demo - esame tecniche di modellazione 3D">
+    <meta name="twitter:description" content="WebXR demo - esame tecniche di modellazione 3D">
+    <meta name="twitter:image" content="">
+
+	<!-- Favicon -->
+    <link rel="icon" href="img/luca.png">
+	
+	<!-- Web Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
+	
+    <meta name="description" content="Virtual Gallery by Luca Corsi/VRGallery https://metaversevirtualart.com">
+	<meta name="Luca Corsi" content="">
+		
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.0/dist/aframe-extras.min.js"></script>
+	<script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@5.0.0/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://rocketvirtual.com/aframePACKAGE/aframe-teleport-controls-master/dist/aframe-teleport-controls.js"></script>
+
+    <script src="js/lzma.js"></script>
+    <script src="js/ctm.js"></script>
+    <script src="js/CTMLoader.js"></script>
+
+    <script src="js/aframe-teleport-controls.min.js"></script>
+    <script src="js/spheres_anim.js"></script>
+    <script src="js/anim_1.js"></script>
+    <script src="js/anim_2.js"></script>
+    <script src="js/mocap.js"></script>
+    <script src="js/envMapMaterial.js"></script>
+    <script src="js/ctm_component.js"></script>
+    <script src="js/mobile_component.js"></script>
+    
+          <script>
+AFRAME.registerComponent('a-frame-to-html', {
+  init: function () {
+    let box = document.querySelector('#MONOLITE')
+    let modal = document.querySelector('.container')
+
+    box.addEventListener('click', (e) => {
+      modal.classList.add("show")
+    })
+  }
+});
+</script>
+    
+  
+
+    <!-- audio-controls -->
+    
+
+
+  </head>
+
+  <body>
+      
+
+
+
+    <div id="container" class="container">
+      <div class="info">
+        <div class="company"><a href="http://www.metaversevirtualart.com" target="_blank">Luca Corsi</a></div>
+        <div class="title">VR Gallery</div>
+        <div class="logo"><a href="https://www.metaversevirtualart.com" target="_blank"><img src="img/luca.png"></a></div>
+        <a class="button" id="start_experience" href="#">Avvia Esprerienza</a>
+        <div class="instructions">
+          <div><strong>VR</strong>: Hand controllers e teletrasporto con "trigger".</div>
+          <div><strong>Desktop</strong>: Tatiera (WASD/freccie) e mouse.</div>
+          <div><strong>Mobile</strong>: touch controls.</div>
+        </div>
+      </div>
+    </div>
+
+    <!--<a-scene stats>-->
+
+    <a-scene>
+
+             <a-entity ></a-entity>
+<a-entity></a-entity>
+        
+    	<a-entity movement-controls="speed: 0.2; constrainToNavMesh: true" position="0 0 0"
+                      >
+			<!-- Camera -->
+			<a-entity id="cam" camera position="0 1.6 0"
+					  look-controls="pointerLockEnabled: true"
+                      touch-controls="">
+				<a-cursor></a-cursor>
+			</a-entity>
+		</a-entity>
+        
+        
+     
+        
+         
+        <!-- Nav-Mesh -->
+           <a-asset-item id="Nav-Mesh" src="unity/nav-mesh-museo.gltf"></a-asset-item>
+        
+          <a-entity gltf-model="#Nav-Mesh" 
+            nav-mesh
+                    scale=" 0.9 0.9 0.9"
+            rotation="0 0 0" 
+            visible="false"></a-entity>
+        
+       
+      	<a-box id="yellow" color="#FF0000" position="-3.0016 1.03358 -1.42353" class="ui" href="https://www.metaversevirtualart.com" target="_blank"  scale="0.25 0.25 0.05"
+			   event-set__enter="_event: mouseenter; material.color: #FF0000"
+			   event-set__leave="_event: mouseleave; material.color: #FFAA00" 
+			   event-set__scale="_target: #blue; _event: click; scale: 1 1 1"
+			   event-set__position="_target: #grey; _event: click; position: -3.0016 1.03358 -1.38">
+		</a-box>
+		
+		<!-- Blue Box | Morphing Panel  cambiare posizione in "0 3 -5" -->
+		<a-box id="blue" color="#00AAFF" position="0 -4 -5" opacity="1"></a-box>
+		<!-- Grey Plane | Reset/Close -->
+
+		<a-plane id="grey" color="#fff" position="-3.0016 1.03358 -3" scale="0.25 0.25 0.5" class="ui"
+			 	 event-set__enter="_event: mouseenter; material.color: #FF0000"
+				 event-set__leave="_event: mouseleave; material.color: #fff"
+				 event-set__position="_event: click; position: -3.0016 1.03358 -1.5"
+				 event-set__scale="_target: #blue; _event: click; scale: 0 0 0">
+		</a-plane>
+        
+<!--
+        <a-box id="portale" class="link" rotation="0 90 0" link="href: /onclick_pages/mobile4 - Copia.html; title: Roomkey" color="brown" depth="2" height="2.5" width="0.05" material="" geometry="" position="-0.02 1.0332 -12.99099" scale="0.03 0.8 0.8"> -->
+            
+            
+  
+    </a-box>
+        
+      <a-entity mobile></a-entity>
+
+      
+      <a-entity light="type: ambient; color: #FFF" intensity="0.9"></a-entity>
+
+      <!-- Custom components with animations 
+      <a-entity spheres material="shader: envMapMaterial; src:textures/cube/hall/; "></a-entity>
+      <a-entity anim_1></a-entity>
+      <a-entity anim_2></a-entity>
+-->
+
+      <!-- - Custom components with animations -->

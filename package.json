@@ -1,0 +1,28 @@
+{
+  "dependencies": {
+    "gh-pages": "^4.0.0"
+  },
+  "name": "provagithub",
+  "description": "[slack]: https://aframevr.slack.com/join/shared_invite/zt-f6rne3ly-ekVaBU~Xu~fsZHXr56jacQ",
+  "version": "1.0.0",
+  "main": "main.js",
+  "directories": {
+    "doc": "docs",
+    "example": "examples",
+    "test": "tests"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LucaCorsi-ez/hosting_test.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LucaCorsi-ez/hosting_test/issues"
+  },
+  "homepage": "https://github.com/LucaCorsi-ez/hosting_test#readme"
+}

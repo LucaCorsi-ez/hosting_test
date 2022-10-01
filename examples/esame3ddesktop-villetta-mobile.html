@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- Meta -->
+    <meta charset="utf-8">
+    <title>Virtual Reality Museum in A-Frame</title>
+
+    <meta property="og:title" content="WebXR demo - esame tecniche di modellazione 3D" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://metaverseevirtualart.com" />
+    <meta property="og:image" content="" />
+    <meta property="og:description" content="WebXR demo - esame tecniche di modellazione 3D" />
+	<meta property="article:tag" content="WebXR" />
+	<meta property="article:tag" content="A-Frame" />
+	<meta property="article:section" content="Virtual Reality" />
+
+    <meta name="twitter:card" content="summary_large_image">
+
+    <meta name="twitter:title" content="WebXR demo - esame tecniche di modellazione 3D">
+    <meta name="twitter:description" content="WebXR demo - esame tecniche di modellazione 3D">
+    <meta name="twitter:image" content="">
+
+	<!-- icona logo -->
+    <link rel="icon" href="img/luca.png">
+	
+	<!-- Web Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet"> 
+    
+    
+	
+    <meta name="description" content="Virtual Gallery by Luca Corsi/VRGallery https://metaversevirtualart.com">
+	<meta name="Luca Corsi" content="">
+		
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.0/dist/aframe-extras.min.js"></script>
+	<script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@5.0.0/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://rocketvirtual.com/aframePACKAGE/aframe-teleport-controls-master/dist/aframe-teleport-controls.js"></script>
+
+    <script src="js/lzma.js"></script>
+    <script src="js/ctm.js"></script>
+    <script src="js/CTMLoader.js"></script>
+
+    <script src="js/aframe-teleport-controls.min.js"></script>
+    <script src="js/spheres_anim.js"></script>
+    <script src="js/anim_1.js"></script>
+    <script src="js/anim_2.js"></script>
+    <script src="js/mocap.js"></script>
+    <script src="js/envMapMaterial.js"></script>
+    <script src="js/ctm_component.js"></script>
+    <script src="js/mobile_component.js"></script>
+
+    
+          <script>
+AFRAME.registerComponent('a-frame-to-html', {
+  init: function () {
+    let box = document.querySelector('#MONOLITE')
+    let modal = document.querySelector('.container')
+
+    box.addEventListener('click', (e) => {
+      modal.classList.add("show")
+    })
+  }
+});
+</script>
+    
+      
+
+    <!-- audio-controls -->
+    
+
+
+  </head>
+
+  <body>
+      
+
+
+
+    <div id="container" class="container">
+      <div class="info">
+        <div class="company"><a href="http://www.metaversevirtualart.com" target="_blank">Luca Corsi</a></div>
+        <div class="title">VR Gallery</div>
+        <div class="logo"><a href="https://www.metaversevirtualart.com" target="_blank"><img src="img/luca.png"></a></div>
+        <a class="button" id="start_experience" href="#">Avvia Esprerienza</a>
+        <div class="instructions">
+          <div><strong>VR</strong>: Hand controllers e teletrasporto con "trigger".</div>
+          <div><strong>Desktop</strong>: Tatiera (WASD/freccie) e mouse.</div>
+          <div><strong>Mobile</strong>: touch controls.</div>
+        </div>
+      </div>
+    </div>
+
+    <!--<a-scene stats>-->
+
+
+
+
+    <a-scene>
+	<a-entity movement-controls="speed: 0.25; constrainToNavMesh: true" position="0 0 0"
+                      >
+			<!-- Camera -->
+			<a-entity id="cam" camera position="0 2.2 0"
+					  look-controls="pointerLockEnabled: true"
+                      touch-controls="">
+				<a-cursor></a-cursor>
+			</a-entity>
+		</a-entity>
+        
+    
+     
+   
+           <a-asset-item id="Nav-Mesh" src="models/nav-mesh2.glb"></a-asset-item>
+        
+          <a-entity gltf-model="#Nav-Mesh" 
+            nav-mesh
+           scale="2 2 2.08" rotation="" visible="false" position="-2.82851 -0.57728 -1.62746"></a-entity> 
+
+      <!--
+        
+      	<a-box id="yellow" color="#FF0000" position="-3.0016 1.03358 -1.42353" class="ui" href="https://www.metaversevirtualart.com" target="_blank"  scale="0.25 0.25 0.05"
+			   event-set__enter="_event: mouseenter; material.color: #FF0000"
+			   event-set__leave="_event: mouseleave; material.color: #FFAA00" 
+			   event-set__scale="_target: #blue; _event: click; scale: 1 1 1"
+			   event-set__position="_target: #grey; _event: click; position: -3.0016 1.03358 -1.38">
+		</a-box>
+		
+		 Blue Box | Morphing Panel  cambiare posizione in "0 3 -5" 
+		<a-box id="blue" color="#00AAFF" position="0 -4 -5" opacity="1"></a-box>
+		<!-- Grey Plane | Reset/Close 
+
+		<a-plane id="grey" color="#fff" position="-3.0016 1.03358 -3" scale="0.25 0.25 0.5" class="ui"
+			 	 event-set__enter="_event: mouseenter; material.color: #FF0000"
+				 event-set__leave="_event: mouseleave; material.color: #fff"
+				 event-set__position="_event: click; position: -3.0016 1.03358 -1.5"
+				 event-set__scale="_target: #blue; _event: click; scale: 0 0 0">
+		</a-plane>
+        
+<!--
+        <a-box id="portale" class="link" rotation="0 90 0" link="href: /onclick_pages/mobile4 - Copia.html; title: Roomkey" color="brown" depth="2" height="2.5" width="0.05" material="" geometry="" position="-0.02 1.0332 -12.99099" scale="0.03 0.8 0.8"> -->
+            
+            
+  
+   
+        
+      <a-entity mobile></a-entity>
+
+
+ 
+
+
+      <!-- Custom components with animations 
+      <a-entity spheres material="shader: envMapMaterial; src:textures/cube/hall/; "></a-entity>
+      <a-entity anim_1></a-entity>
+      <a-entity anim_2></a-entity>
+-->
+
+      <!-- - Custom components with animations -->
+
+      <a-assets>
+        <a-mixin id="checkpoint"></a-mixin>
+        <a-mixin id="checkpoint-hovered" color="#6CEEB5"></a-mixin>
+
+
+        <img id="sky_sphere-texture" src="textures/sky_sphere.jpg">
+
+        <a-sound src="audio/satie"
+                 autoplay="true"
+                 loop="true"
+                 position="1 1 0"></a-sound>
+
+        <a-sound src="audio/219462__cediez__musee-victoria-londres-grand-escalier.ogg"
+                 autoplay="true"
+                 loop="true"
+                 position="1 1 10"></a-sound>
+          
+            <!-- audio-track -->
+          
+          <audio id="satie" src="audio/satie.mp3"></audio>
+
+
+        <!-- floor
+        <a-asset-item id="floor-obj" src="models/floor.obj"></a-asset-item>
+        <img id="floor-texture" src="textures/floor.jpg">
+        <img id="floor_normal-texture" src="textures/floor_normal.jpg">
+        <!-- - floor -->
+
+        <!-- hall 
+        <a-asset-item id="hall-obj" src="models/hall.obj"></a-asset-item>
+        <img id="hall-texture" src="textures/hall.jpg">
+        <!--<img id="hall_normal-texture" src="textures/hall_normal.jpg">-->
+        <!-- - hall -->
+          
+             <div id="container" class="container">
+      <div class="info">
+        <div class="company"><a href="http://www.metaversevirtualart.com" target="_blank">metaversevirtualart.com</a></div>
+        <div class="title">VR Gallery</div>
+        <div class="logo"><a href="http://www.metaversevirtualart.com" target="_blank"><img src="img/luca.png"></a></div>
+        <a class="button" id="start_experience" href="#">start experience</a>
+        <div class="instructions">
+          <div><strong>VR</strong>: Hand controllers and teleport with trigger.</div>
+          <div><strong>Desktop</strong>: Keyboard (WASD/arrows) and mouse.</div>
+          <div><strong>Mobile</strong>: Gaze cursor and teleportation.</div>
+        </div>
+      </div>
+    </div>
+
+   
+          
+  <!--    <a-asset-item id="villetta-obj" src="models/Villetta.obj"></a-asset-item>
+        <img id="villetta-texture" src="textures/villangons2.png">
+          <img id="OCCLUSION" src="textures/occlusion-villa.png">
+          <img id="roughness" src="textures/pbr/fiber-textured-wall1_roughness.png">
+          <img id="albedo" src="textures/pbr/fiber-textured-wall1_albedo.png">
+          <img id="ambient_occlusion" src="textures/pbr/fiber-textured-wall1_ao.png">
+          <img id="normal_map" src="textures/pbr/fiber-textured-wall1_normal-dx.png">
+          <img id="metalness" src="textures/pbr/fiber-textured-wall1_metallic.png">  -->
+          
+ 
+        <img id="galleria_normal-texture" src="textures/">
+          
+          
+        <!-- - hall -->
+ 
+          
+           <a-asset-item id="sfondopinguino-obj" src="demasi/modelli/sfondocappotto.obj"></a-asset-item>
+        <img id="sfondopinguino-texture" src="textures/sfondo%20pinguino.jpg">
+          
+           <a-asset-item id="testamela-obj" src="demasi/modelli/MELA.obj"></a-asset-item>
+        <img id="testamela-texture" src="demasi/texture/melatexture.png">
+          
+          <a-asset-item id="pinguino-obj" src="models/pinguino.obj"></a-asset-item>
+        <img id="pinguino-texture" src="textures/pinguino2.png">
+             
+             <a-asset-item id="deadpool-obj" src="models/deadpool.obj"></a-asset-item>
+        <img id="deadpool-texture" src="esame%25203D/texture-3d/Deadpool_Dm_(rosso_spento).png">
+          
+          <a-asset-item id="sfondodeadpool-obj" src="demasi/modelli/sfondo%20pipa.obj"></a-asset-item>
+        <img id="sfondodeadpool-texture" src="textures/Deadpool_film_2.png">  
+          
+            <a-asset-item id="sfondo-obj" src="models/sfondo-obj.obj"></a-asset-item>
+        <img id="sfondo-texture" src="textures/mountain.jpg">  
+          
+            <a-asset-item id="pianotavolo-obj" src="models/tavolo%20piano.obj"></a-asset-item>
+        <img id="pianotavolo-texture" src="textures/tavolosala.png">  
+          
+            
+          
+                   <a-asset-item id="scrivania-obj" src="models/scrivania.obj"></a-asset-item>
+        <img id="scrivania-texture" src="textures/scrivania.png">  
+          
+                <a-asset-item id="quadro1-obj" src="models/quadro1-villa.obj"></a-asset-item>
+        <img id="quadro1-texture" src="textures/quadro1.png">  
+          
+                        <a-asset-item id="quadro2-obj" src="models/quadro2%20.obj"></a-asset-item>
+        <img id="quadro2-texture" src="textures/quadro2.png">  
+          
+               <a-asset-item id="quadro3-obj" src="models/quadro3%20.obj"></a-asset-item>
+        <img id="quadro3-texture" src="textures/quadro3.png">  
+          
+           <a-asset-item id="quadro4-obj" src="models/quadro4.obj"></a-asset-item>
+        <img id="quadro4-texture" src="textures/quadro4.png">  
+          
+            <a-asset-item id="quadro5-obj" src="models/quadro5.obj"></a-asset-item>
+        <img id="quadro5-texture" src="textures/quadro5.png">  
+          
+            <a-asset-item id="quadro6-obj" src="models/quadro6.obj"></a-asset-item>
+        <img id="quadro6-texture" src="textures/quadro6.png">
+          
+     
+          
+          
+          
+          
+          
+          
+          
+        <!--    <a-asset-item id="3d-obj" src="models/3ddD.obj"></a-asset-item>
+        <img id="3d-texture" src="textures/villaombre2.png">   -->
+          
+                  <a-asset-item id="solostanza-obj" src="models/solostanza.obj"></a-asset-item>
+        <img id="solostanza-texture" src="textures/SOLOSTANZA2.png">  
+          
+          <a-asset-item id="porta1-obj" src="models/porta1.obj"></a-asset-item>
+        <img id="porta1-texture" src="textures/porta1.png">  
+          
+           <a-asset-item id="porta2-obj" src="models/portascale.obj"></a-asset-item>
+        <img id="porta2-texture" src="textures/portascale.png">  
+          
+          
+              <a-asset-item id="battiscopa-obj" src="models/battiscopa.obj"></a-asset-item>
+        <img id="battiscopa-texture" src="textures/battiscopa.png">
+          
+            <a-asset-item id="mensole-obj" src="models/mensoleunite.obj"></a-asset-item>
+        <img id="mensole-texture" src="textures/mensoleunite.png">
+            
+            <a-asset-item id="televisore-obj" src="models/Televisore.obj"></a-asset-item>
+        <img id="televisore-texture" src="textures/Televisore2.png">
+          
+                      <a-asset-item id="PORTAFINESTRA-obj" src="models/Portafinestra.obj"></a-asset-item>
+        <img id="PORTAFINESTRA-texture" src="textures/portafinestra.png">
+          
+                             <a-asset-item id="lampada-obj" src="models/lampada.obj"></a-asset-item>
+        <img id="lampada-texture" src="textures/lampada.png">
+          
+           <a-asset-item id="quadri-obj" src="models/quadrivilla.obj"></a-asset-item>
+        <img id="quadri-texture" src="textures/quadrivilla.png">
+          
+            <a-asset-item id="vetratasup-obj" src="models/vetrata.obj"></a-asset-item>
+        <img id="vetratasup-texture" src="textures/vetratasup.png">
+          
+          
+          
+                <a-asset-item id="bicchiere-obj" src="models/bicchiere.obj"></a-asset-item>
+   
+          
+          
+          
+          
+          
+          
+          
+          
+          
+
+     
+
+        
+         <a-asset-item id="parquet-obj" src="models/pavimentovilla2.obj"></a-asset-item>
+        <img id="parquet-texture" src="textures/pavimentovilla2.png">
+          
+          <a-asset-item id="basetavolo-obj" src="models/base%20tavolo.obj"></a-asset-item>
+        <img id="basetavolo-texture" src="textures/basetavolo.png">
+          
+          <a-asset-item id="tappeto-obj" src="models/tappeto.obj"></a-asset-item>
+        <img id="tappeto-texture" src="textures/tappeto2.png">
+          
+            <a-asset-item id="tapparella-obj" src="models/tapparella2.obj"></a-asset-item>
+        <img id="tapparella-texture" src="textures/tapparella.png">
+          
+             <a-asset-item id="divano-obj" src="models/divano.obj"></a-asset-item>
+        <img id="divano-texture" src="textures/divano2.png">
+          
+             <a-asset-item id="vetrotavolo" src="models/vetrotavolo.gltf"></a-asset-item>
+     
+                 <a-asset-item id="lampadari-obj" src="models/lampadari%20villetta.obj"></a-asset-item>
+        <img id="lampadari-texture" src="textures/Lampadari2.png">
+          
+          <a-asset-item id="libri-obj" src="models/libri.obj"></a-asset-item>
+        <img id="libri-texture" src="textures/libri.png">
+          
+                <a-asset-item id="libreria-obj" src="models/libreria.obj"></a-asset-item>
+        <img id="libreria-texture" src="textures/libreria.png">
+          
+                    <a-asset-item id="ritornomuseo-obj" src="models/Ritorno%20museo.obj"></a-asset-item>
+        <img id="ritornomuseo-texture" src="textures/museo3d.png">
+          
+               <a-asset-item id="ritornomuseo2-obj" src="models/Ritorno%20museo.obj"></a-asset-item>
+        <img id="ritornomuseo2-texture" src="textures/museomagritte.png">
+        
+          <!--
+                        <a-asset-item id="sedia-obj" src="models/sedia.obj"></a-asset-item>
+        <img id="sedia-texture" src="textures/sedia.png"> -->
+          
+          <a-asset-item id="pipa2" src="models/villa%203d%20render.glb"></a-asset-item>
+          
+             <a-asset-item id="divano" src="models/divano.glb"></a-asset-item>
+          
+          <a-asset-item id="villanormal" src="models/villanormal.glb"></a-asset-item>
+          
+            <a-asset-item id="lampada" src="models/Lamp.glb"></a-asset-item>
+          
+                      <a-asset-item id="vino" src="models/vino.glb"></a-asset-item>
+          
+           <a-asset-item id="vasoazzurro" src="models/vaso%20azzurro.glb"></a-asset-item>
+
+                <a-asset-item id="vaso2" src="models/vaso2.glb"></a-asset-item>
+          
+          
+            <a-asset-item id="decanter" src="models/decanter%20con%20vino.glb" material="opacity: 0.38; metalness: 0.23; roughness: 0"></a-asset-item>
+          
+          
+  
+      
+          
+          
+       
+          
+          
+        <!--  <a-asset-item id="3dd" src="models/3ddD.glb"></a-asset-item> -->
+          
+          
+        
+          
+          
+
+             
+          
+          
+
+      </a-assets>
+
+      <a-sky color="#EEEEFF" material="src: #sky_sphere-texture"></a-sky>
+
+
+      
+
+    
+  
+        <!-- galleria e modelli 3D 
+       
+        
+            <a-entity obj-model="obj: #villetta-obj;" material="src: #villetta-texture; 
+                                                                displacementMap: #albedo;
+                                                                displacementScale: -0.8 ;
+                                                               
+                                                                roughnessMap: #roughness;
+                                                                metalnessMap: #metallness;
+                                                                metalness: 0.05;
+                                                                normalMap: #normal_map;
+                                                                normalScale: -0.320 -0-080"  
+            id="hall" scale="0.02 0.02 0.02" position="0 0 0"></a-entity> -->
+      
+       
+            <a-entity obj-model="obj: #auclairedelune-obj;"   class="link2" rotation="0 0 0" link="href: /Au-claire.html; title: CLICK ME!"  material="src: #auclairedelune-texture" id="auclairedelune" scale="0.049 0.049 0.049" position="-0.02 0.03314 -0.0037" rotation="0 0 0"></a-entity>
+         
+        
+        
+        
+        
+        <!--
+        <a-entity obj-model="obj: #parquet-obj;" material="src: #parquet-texture; " id="parquet" scale="0.02 0.02 0.02" position="0 0 -0.00761"></a-entity>
+        
+       
+        <a-entity obj-model="obj: #parquet-obj;" material="src: #parquet-texture; " id="parquet2" scale="0.02 0.02 0.02" position="0 5 -0.00761"></a-entity> -->
+        
+      
+      
+        <a-entity obj-model="obj: #divano-obj;" material="src: #divano-texture; " id="bddd" scale="0.02 0.02 0.02" position="-0.011 0 -4.334"></a-entity>
+        
+      
+
+ 
+      
+      <!-- <a-entity gltf-model="#villanormal" id="vetrotavolo" scale="0.2 0.2 0.2" rotation="" position="-4.29088 1.2088 3.82883"
+                  visible="" ></a-entity>
+      
+        <a-entity gltf-model="#stanza1" id="vetrotavolo" scale="0.2 0.2 0.2" rotation="" position="-4.29088 1.2088 3.82883"
+                  visible="" ></a-entity> -->
+      
+      
+      
+      
+
+      <a-entity gltf-model="#divano" id="divano" scale="0.02 0.02 0.02" rotation="" position="-0.00112 0 -4.34377" 
+                  visible="" ></a-entity>
+
+       <a-entity gltf-model="#3dd" id="divano" scale="0.02 0.02 0.02" rotation="" position="-0.26812 0 -5.10902"
+                  visible="" ></a-entity>
+      
+      <a-entity gltf-model="#sfondo" id="divano" scale="0.02 0.02 0.02" rotation="" position="-0.26812 0 -5.10902"
+                  visible="" ></a-entity>
+      
+      <a-entity gltf-model="#lampada" id="lampada" scale="0.1 0.1 0.1" rotation="" position="-0.26812 0 -5.10902"
+                  visible="" ></a-entity>
+ 
+             <a-entity gltf-model="#vino" id="lampada" scale="0.02 0.02 0.02" rotation="" position="0 0 0"
+                  visible="" ></a-entity>
+
+                  <a-entity gltf-model="#tavolo" id="lampada" scale="0.02 0.02 0.02" rotation="" position="0 0 0"
+                  visible="" ></a-entity>
+
+      
+       <a-entity gltf-model="#decanter" id="decanter" scale="0.02 0.02 0.02" rotation="" position="0 0 0"
+                  visible="" ></a-entity>
+      
+             <a-entity gltf-model="#scrivania" id="decanter" scale="0.02 0.02 0.02" rotation="" position="0 0 0"
+                  visible="" ></a-entity>
+
+        <a-entity gltf-model="#vasoazzurro" id="decanter" scale="0.02 0.02 0.02" rotation="" position="0 0 0"
+                  visible="" ></a-entity>
+      
+            <a-entity gltf-model="#vaso2" id="decanter" scale="0.02 0.02 0.02" rotation="" position="0 0 0"
+                  visible="" ></a-entity>
+
+       <a-entity obj-model="obj: #tappeto-obj;" material="src: #tappeto-texture; roughness: 1 " id="tappeto" scale="0.02 0.02 0.02" position="0 0 0"></a-entity>
+      
+             <a-entity obj-model="obj: #solostanza-obj;" material="src: #solostanza-texture; roughness: 1 " id="solostanza" scale="0.02 0.02 0.02" position="0 0 0"></a-entity>
+      
+       <a-entity obj-model="obj: #PORTAFINESTRA-obj;" material="src: #PORTAFINESTRA-texture; " id="solostanza" scale="0.02 0.02 0.02" position="0 0 0"></a-entity>
+      
+            <a-entity obj-model="obj: #lampada-obj;" material="src: #lampada-texture; " id="solostanza" scale="0.02 0.02 0.02" position="0 0 0"></a-entity>
+      
+       <a-entity obj-model="obj: #lampadari-obj;" material="src: #lampadari-texture; " id="solostanza" scale="0.02 0.02 0.02" position="0 0 0"></a-entity>
+      
+                  <a-entity obj-model="obj: #quadri-obj;" material="src: #quadri-texture; " id="solostanza" scale="0.02 0.02 0.02" position="0 0 0"></a-entity>
+      
+       <a-entity obj-model="obj: #basetavolo-obj;" material="src: #basetavolo-texture; " id="solostanza" scale="0.02 0.02 0.02" position="0 0 0"></a-entity>
+      
+            
+       <a-entity obj-model="obj: #libri-obj;" material="src: #libri-texture; " id="solostanza" scale="0.02 0.02 0.02" position="0 0 0"></a-entity>
+      
+      <a-entity obj-model="obj: #libreria-obj;" material="src: #libreria-texture; " id="solostanza" scale="0.02 0.02 0.02" position="0 0 0"></a-entity>
+      
+      
+            <a-entity obj-model="obj: #porta1-obj;" class="link2" link="href: /demasi-mobile.html; title: CLICK ME!" material="src: #porta1-texture; " id="porta1" scale="0.02 0.02 0.02" position="0 0 0"></a-entity>
+      
+         <a-entity obj-model="obj: #porta2-obj;" class="link3" link="href: /esame3dmobiledefinitivo.html; title: CLICK ME!" material="src: #porta2-texture; " id="porta2" scale="0.02 0.02 0.02" position="0 0 -0.04"></a-entity>
+            
+       <!--  <a-entity obj-model="obj: #sedia-obj;" material="src: #sedia-texture; " id="sedia" scale="0.02 0.02 0.02" position="0 0 -0.04"></a-entity> -->
+      
+      
+      
+      
+      
+             <a-entity obj-model="obj: #battiscopa-obj;" material="src: #battiscopa-texture; roughness: 0 " id="porta1" scale="0.02 0.02 0.02" position="0 0 0"></a-entity>
+      
+      <a-entity obj-model="obj: #parquet-obj;" material="src: #parquet-texture; roughness: 1 " id="porta1" scale="0.02 0.02 0.02" position="0 0 0"></a-entity>
+
+          <a-entity obj-model="obj: #mensole-obj;" material="src: #mensole-texture; " id="mensoleinf" scale="0.02 0.02 0.02" position="0 0 0"></a-entity>
+      
+      <a-entity obj-model="obj: #televisore-obj;" material="src: #televisore-texture; roughness: 0" id="mensoleinf" scale="0.02 0.02 0.02" position="0 0 0"></a-entity>
+      
+       <a-entity obj-model="obj: #3d-obj;" material="src: #3d-texture; roughness: 1" id="tappeto" scale="0.02 0.02 0.02" position="0 0 0"></a-entity>
+      
+         <a-entity obj-model="obj: #pianotavolo-obj;" material="src: #pianotavolo-texture; roughness: 0 " id="tappeto" scale="0.02 0.02 0.02" position="0 0 0"></a-entity>
+      
+
+      
+       <a-entity obj-model="obj: #tapparella-obj;" material="src: #tapparella-texture; " id="tapparella" scale="0.02 0.02 0.02" position="0 0 0" rotation="0 0 0"></a-entity>
+      
+              <a-entity obj-model="obj: #lampadari-obj;" material="src: #lampadari-texture" id="lampadari" scale="0.049 0.049 0.049" position="-0.02 0.03314 -0.0037" rotation="0 0 0"></a-entity>
+      
+          
+      
+         <a-entity obj-model="obj: #bicchiere-obj;" material="opacity: 0.38; metalness: 0.23; roughness: 0" id="vaso" scale="0.02 0.02 0.02" position="0 0 0" rotation="0 0 0"></a-entity>
+      
+        <a-entity obj-model="obj: #bicchiere-obj;" material="opacity: 0.38; metalness: 0.23; roughness: 0" id="vaso" scale="0.02 0.02 0.02" position="0 0 0" rotation="0 0 0"></a-entity>
+      
+      <a-entity obj-model="obj: #scrivania-obj;" material="src: #scrivania-texture" id="vaso" scale="0.02 0.02 0.02" position="0 0 0" rotation="0 0 0"></a-entity>
+      
+         <a-entity obj-model="obj: #quadro1-obj;" material="src: #quadro1-texture" id="vaso" scale="0.02 0.02 0.02" position="0 0 0" rotation="0 0 0"></a-entity>
+      
+         <a-entity obj-model="obj: #quadro2-obj;" material="src: #quadro2-texture" id="vaso" scale="0.02 0.02 0.02" position="0 0 0" rotation="0 0 0"></a-entity>
+      
+         <a-entity obj-model="obj: #quadro3-obj;" material="src: #quadro3-texture" id="vaso" scale="0.02 0.02 0.02" position="0 0 0" rotation="0 0 0"></a-entity>
+      
+         <a-entity obj-model="obj: #quadro4-obj;" material="src: #quadro4-texture" id="vaso" scale="0.02 0.02 0.02" position="0 0 0" rotation="0 0 0"></a-entity>
+      
+         <a-entity obj-model="obj: #quadro5-obj;" material="src: #quadro5-texture" id="vaso" scale="0.02 0.02 0.02" position="0 0 0" rotation="0 0 0"></a-entity>
+      
+         <a-entity obj-model="obj: #quadro6-obj;" material="src: #quadro6-texture" id="vaso" scale="0.02 0.02 0.02" position="0 0 0" rotation="0 0 0"></a-entity>
+      
+            
+               <a-entity obj-model="obj: #vetratasup-obj;" material="src: #vetratasup-texture; opacity: 0.38; metalness: 0.23; roughness: 0" id="vaso" scale="0.021 0.02 0.02" position="0.19 -0.137 -0.06" rotation="0 0 0"></a-entity>
+      
+             <a-entity obj-model="obj: #ritornomuseo-obj;" material="src: #ritornomuseo-texture; "class="link2" link="href: /esame3dmobiledefinitivo.html; title: CLICK ME!"  id="tapparella" scale="0.02 0.02 0.02" position="0.02 0 0" rotation="0 0 0"></a-entity>
+      
+         <a-entity obj-model="obj: #ritornomuseo2-obj;" material="src: #ritornomuseo2-texture; "class="link2" link="href: /MagritteExperienceVR-LucaCorsi-desktop.html; title: CLICK ME!"  id="tapparella3" scale="0.02 0.02 0.02" position="-0.560 0 0" rotation="0 90 0"></a-entity>
+      
+      
+   
+      
+    <!--   <a-entity obj-model="obj: #sfondo-obj;" material="src: #sfondo-texture; " id="tapparella" scale="0.02 0.02 0.02" position="0.37912 -0.12749 -0.07187"rotation="0 0 0"></a-entity> -->
+      
+      
+      
+       
+        
+        
+            
+
+            
+            
+            <!-- quadro interattivo "Au claire de lune" -->
+            
+            <a-entity obj-model="#Auclairedelune-obj" class="link2" rotation="0 0 0" link="href: /Au-claire.html; title: CLICK ME!"  scale="0.049 0.049 0.049" position="-0.02 0.03314 -0.0037" >   <a-text id="portale1" align="center" position="0 1.8 0" rotation="0 0 0" value="click me!" text=""></a-text>
+                
+                            <a-entity obj-model="#ritornomuseo-obj" class="link2" rotation="0 0 0" link="href: /esame3dmobiledefinitivo.html; title: CLICK ME!"  maetrial="#ritornomuseo-texture" scale="0.049 0.049 0.049" position="0 0 0" >   <a-text id="portale1" align="center" position="0 1.8 0" rotation="0 0 0" value="click me!" text=""></a-text>
+            
+      
+
+    
+
+    </a-scene>
+
+    <script src="main.js"></script>
+
+</body>
+</html>
